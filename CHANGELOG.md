@@ -14,5 +14,7 @@ This project follows a practical changelog style organized by release.
   profiles, policy overrides, and the committed JSON Schema.
 - Add repository inventory walking for package-manager files, CI workflows, and
   dependency-bot configuration.
+- Add line-aware parser utilities for JSON, YAML, TOML, INI, XML,
+  shell-style config, and requirements files.
 - Add CI and local development commands for formatting, vetting, testing, and
   building.
