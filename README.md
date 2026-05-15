@@ -1,62 +1,48 @@
-# Ozark Security Labs Repository Template
+# PkgWarden
 
-Private starter repository for Ozark Security Labs open-source security tooling.
+PkgWarden is an open-source repository hardening advisor for package-manager
+and dependency-ingestion configuration.
 
-This template captures the common repository features currently shared across
-`SecFlow`, `rulepath`, and `deterministic-deps`:
+PkgWarden is not an SCA scanner, vulnerability scanner, CVE database, malware
+detector, or dependency inventory replacement. It inspects repository
+configuration and reports evidence-bound hardening recommendations.
 
-- AGPL-3.0-only license baseline.
-- Contributor License Agreement placeholder.
-- Contribution, support, security, changelog, and conduct docs.
-- GitHub issue templates for bugs, features, rules, docs, and false positives/negatives.
-- Pull request checklist tuned for security tooling.
-- Active Dependabot configuration for GitHub Actions.
-- Optional Dependabot expansion template for npm and Cargo projects.
-- Repository hygiene workflow with pinned GitHub Actions and `deterministic-deps`.
-  SARIF upload is disabled by default so the private template works without GitHub Advanced Security.
-- Optional language-specific CI workflow templates for Rust and Node/TypeScript projects.
-- Common `.gitignore`, `.editorconfig`, `.gitattributes`, and deterministic-deps config.
+## Current status
 
-## Use
+This repository is in the M0 foundation milestone. The CLI can run a minimal
+scan and emit deterministic zero-finding output, but package-manager rules are
+not implemented yet.
 
-Create a new repository from this template, then replace placeholders:
-
-- `PROJECT_NAME`
-- `PROJECT_SLUG`
-- `PROJECT_DESCRIPTION`
-- `PRIMARY_LANGUAGE`
-- `PACKAGE_ECOSYSTEMS`
-- `CONTACT_METHOD`
-
-Recommended first edit:
+## CLI
 
 ```bash
-python scripts/apply-template.py \
-  --name "Project Name" \
-  --slug project-slug \
-  --description "Short project description" \
-  --language rust
+go run ./cmd/pkgwarden -- scan fixtures/empty-repo
+go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format human
+go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format json
+go run ./cmd/pkgwarden -- version
+go run ./cmd/pkgwarden -- help
 ```
 
-The script is intentionally simple string replacement. Review the result before
-pushing a public repository.
+The scan command accepts `--format human|json`.
 
-## License posture
+## Development
 
-The template defaults to `AGPL-3.0-only`, matching the current Ozark Security
-Labs open-source commercial posture. If a project needs a different license,
-change `LICENSE`, `README.md`, `CONTRIBUTING.md`, and `CLA.md` together before
-accepting outside contributions.
+```bash
+gofmt -l .
+go vet ./...
+go test ./...
+go build ./cmd/pkgwarden
+```
 
-## Active vs optional workflows
+## Safety posture
 
-Active workflows:
+- Analysis is local and offline by default.
+- PkgWarden does not call vendor APIs in the foundation milestone.
+- PkgWarden does not execute analyzed repository code.
+- Findings must be evidence-bound and include file and line context when rule
+  logic is added.
 
-- `.github/workflows/repo-hygiene.yml` — common repository checks and dependency determinism.
+## License
 
-Optional workflow templates:
-
-- `templates/workflows/ci-node.yml`
-- `templates/workflows/ci-rust.yml`
-
-Copy one into `.github/workflows/ci.yml` after choosing the project stack.
+PkgWarden is licensed under the GNU Affero General Public License version 3 only
+(`AGPL-3.0-only`). See [LICENSE](LICENSE).

@@ -1,12 +1,12 @@
-# Contributing to PROJECT_NAME
+# Contributing to PkgWarden
 
-Thanks for helping improve PROJECT_NAME.
+Thanks for helping improve PkgWarden.
 
 ## License
 
-PROJECT_NAME is licensed under the GNU Affero General Public License version 3 only
+PkgWarden is licensed under the GNU Affero General Public License version 3 only
 (`AGPL-3.0-only`). By contributing, you agree that your contribution is submitted
-under the PROJECT_NAME Contributor License Agreement in [CLA.md](CLA.md).
+under the PkgWarden Contributor License Agreement in [CLA.md](CLA.md).
 
 ## Contributor License Agreement
 
@@ -19,21 +19,20 @@ sure you are authorized to submit the contribution under the CLA.
 
 ## Development
 
-Document the project-specific setup here.
-
-Suggested sections:
-
 ```bash
-# install/build/test commands go here
+gofmt -l .
+go vet ./...
+go test ./...
+go build ./cmd/pkgwarden
 ```
 
 ## Security-tooling expectations
 
 - Keep analysis local/offline by default unless the user explicitly opts in.
-- Avoid executing analyzed repository code.
+- Do not execute analyzed repository code.
 - Keep findings evidence-bound and avoid overstating confidence.
 - Add fixtures/tests for false-positive and false-negative sensitive behavior.
-- Keep advisory and enforce modes distinct when the project has CI behavior.
+- Keep advisory and enforce modes distinct when CI behavior is added.
 - Pin GitHub Actions and dependency declarations deterministically.
 
 ## Pull requests

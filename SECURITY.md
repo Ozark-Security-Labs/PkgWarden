@@ -1,12 +1,12 @@
 # Security Policy
 
-PROJECT_NAME is security-adjacent software. Please report vulnerabilities
+PkgWarden is security-adjacent software. Please report vulnerabilities
 responsibly.
 
 ## Reporting a vulnerability
 
 Use GitHub private vulnerability reporting when available. If unavailable,
-contact the maintainers through CONTACT_METHOD before publishing details.
+contact the maintainers through GitHub before publishing details.
 
 Do not open a public issue for sensitive reports.
 

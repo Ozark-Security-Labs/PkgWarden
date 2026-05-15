@@ -23,6 +23,11 @@ coverage/
 **/*.rs.bk
 *.pdb
 
+# Go
+/pkgwarden
+*.test
+coverage.out
+
 # Python
 __pycache__/
 *.py[cod]

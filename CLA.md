@@ -1,4 +1,4 @@
-# PROJECT_NAME Contributor License Agreement
+# PkgWarden Contributor License Agreement
 
 Version 1.0
 
@@ -8,11 +8,11 @@ project is transferred to another legal entity, update the Project Steward
 definition before collecting signatures.
 
 This Contributor License Agreement ("Agreement") governs Contributions submitted
-to `PROJECT_SLUG`.
+to `PkgWarden`.
 
 ## 1. Definitions
 
-"Project" means `PROJECT_SLUG`, including its source code, documentation, tests,
+"Project" means `PkgWarden`, including its source code, documentation, tests,
 examples, release artifacts, workflows, issue templates, and related project
 materials.
 
