@@ -1,0 +1,1072 @@
+{
+  "project": "PkgWarden",
+  "labels": [
+    {
+      "name": "priority:P0",
+      "color": "B60205",
+      "description": "Critical path or release-blocking work."
+    },
+    {
+      "name": "priority:P1",
+      "color": "D93F0B",
+      "description": "Important MVP work."
+    },
+    {
+      "name": "priority:P2",
+      "color": "FBCA04",
+      "description": "Useful but not immediately blocking."
+    },
+    {
+      "name": "priority:P3",
+      "color": "C2E0C6",
+      "description": "Backlog or later-phase work."
+    },
+    {
+      "name": "type:feature",
+      "color": "0E8A16",
+      "description": "New product functionality."
+    },
+    {
+      "name": "type:chore",
+      "color": "C5DEF5",
+      "description": "Maintenance, setup, or operational task."
+    },
+    {
+      "name": "type:docs",
+      "color": "0075CA",
+      "description": "Documentation task."
+    },
+    {
+      "name": "type:test",
+      "color": "5319E7",
+      "description": "Testing, fixtures, QA, or validation."
+    },
+    {
+      "name": "type:spike",
+      "color": "D4C5F9",
+      "description": "Research/prototype task with decision output."
+    },
+    {
+      "name": "type:refactor",
+      "color": "0052CC",
+      "description": "Refactor without major behavior change."
+    },
+    {
+      "name": "area:core",
+      "color": "1D76DB",
+      "description": "Core scanner, inventory, policy engine, and shared types."
+    },
+    {
+      "name": "area:cli",
+      "color": "1D76DB",
+      "description": "Command-line interface and developer UX."
+    },
+    {
+      "name": "area:parser",
+      "color": "1D76DB",
+      "description": "Config, manifest, lockfile, or workflow parser."
+    },
+    {
+      "name": "area:rules",
+      "color": "1D76DB",
+      "description": "Rule implementation and finding logic."
+    },
+    {
+      "name": "area:reporting",
+      "color": "1D76DB",
+      "description": "Human, JSON, SARIF, Markdown, and annotation output."
+    },
+    {
+      "name": "area:github-action",
+      "color": "1D76DB",
+      "description": "GitHub Action integration."
+    },
+    {
+      "name": "area:ci",
+      "color": "1D76DB",
+      "description": "CI workflow analysis and hardening."
+    },
+    {
+      "name": "area:node",
+      "color": "C2E0C6",
+      "description": "npm, pnpm, Yarn, Bun, and Node.js dependency controls."
+    },
+    {
+      "name": "area:python",
+      "color": "C2E0C6",
+      "description": "pip, uv, Poetry, and Python dependency controls."
+    },
+    {
+      "name": "area:dependency-bots",
+      "color": "C2E0C6",
+      "description": "Dependabot and Renovate configuration."
+    },
+    {
+      "name": "area:firewall",
+      "color": "F9D0C4",
+      "description": "Package firewall/proxy detection and validation."
+    },
+    {
+      "name": "area:registry",
+      "color": "F9D0C4",
+      "description": "Registry, package source, mirror, proxy, and source-mapping controls."
+    },
+    {
+      "name": "area:cooldown",
+      "color": "F9D0C4",
+      "description": "Minimum release age, cooldown, and exclude-newer controls."
+    },
+    {
+      "name": "area:install-scripts",
+      "color": "F9D0C4",
+      "description": "Dependency lifecycle/build script execution controls."
+    },
+    {
+      "name": "area:lockfiles",
+      "color": "F9D0C4",
+      "description": "Lockfile, frozen install, checksum, and integrity controls."
+    },
+    {
+      "name": "area:secrets",
+      "color": "F9D0C4",
+      "description": "Token and credential exposure in package-manager config."
+    },
+    {
+      "name": "area:policy",
+      "color": "BFDADC",
+      "description": "PkgWarden policy files, profiles, and org configuration."
+    },
+    {
+      "name": "area:autofix",
+      "color": "BFDADC",
+      "description": "Patch generation and safe remediation."
+    },
+    {
+      "name": "area:docs",
+      "color": "BFDADC",
+      "description": "User-facing docs and rule catalog."
+    },
+    {
+      "name": "area:test-fixtures",
+      "color": "BFDADC",
+      "description": "Fixture repositories and golden tests."
+    },
+    {
+      "name": "area:ecosystem-jvm",
+      "color": "EDEDED",
+      "description": "Maven and Gradle support."
+    },
+    {
+      "name": "area:ecosystem-dotnet",
+      "color": "EDEDED",
+      "description": "NuGet support."
+    },
+    {
+      "name": "area:ecosystem-ruby",
+      "color": "EDEDED",
+      "description": "Bundler/RubyGems support."
+    },
+    {
+      "name": "area:ecosystem-rust",
+      "color": "EDEDED",
+      "description": "Cargo support."
+    },
+    {
+      "name": "area:ecosystem-go",
+      "color": "EDEDED",
+      "description": "Go modules support."
+    },
+    {
+      "name": "area:integrations",
+      "color": "EDEDED",
+      "description": "External service integrations and API adapters."
+    },
+    {
+      "name": "vendor:socket",
+      "color": "F7B5CD",
+      "description": "Socket Firewall or Socket.dev-specific support."
+    },
+    {
+      "name": "vendor:veracode",
+      "color": "F7B5CD",
+      "description": "Veracode Package Firewall-specific support."
+    },
+    {
+      "name": "profile:private-registry",
+      "color": "F7B5CD",
+      "description": "Private registry, artifact proxy, and dependency-confusion hardening profile."
+    },
+    {
+      "name": "size:XS",
+      "color": "C2E0C6",
+      "description": "Very small task."
+    },
+    {
+      "name": "size:S",
+      "color": "C2E0C6",
+      "description": "Small task."
+    },
+    {
+      "name": "size:M",
+      "color": "FEF2C0",
+      "description": "Medium task."
+    },
+    {
+      "name": "size:L",
+      "color": "FAD8C7",
+      "description": "Large task."
+    },
+    {
+      "name": "size:XL",
+      "color": "D4C5F9",
+      "description": "Very large task or epic-like issue."
+    },
+    {
+      "name": "status:needs-decision",
+      "color": "FFFFFF",
+      "description": "Requires product/architecture decision before implementation."
+    },
+    {
+      "name": "status:blocked",
+      "color": "B60205",
+      "description": "Blocked by another issue or external decision."
+    },
+    {
+      "name": "good-first-issue",
+      "color": "7057FF",
+      "description": "Good first contribution for new maintainers."
+    }
+  ],
+  "milestones": [
+    {
+      "title": "M0: Project foundation and scanner core",
+      "description": "Create the PkgWarden repo, CLI entrypoint, scanner data model, parser abstraction, fixture harness, and initial reports. This milestone must land before ecosystem-specific rules scale up."
+    },
+    {
+      "title": "M1: Node.js package-manager hardening MVP",
+      "description": "Implement npm, pnpm, Yarn, and Bun discovery, parsers, and hardening rules for cooldowns, registries, lockfiles, install scripts, and exotic dependency specs."
+    },
+    {
+      "title": "M2: Python package-manager hardening MVP",
+      "description": "Implement pip, uv, and Poetry discovery, parsers, and hardening rules for package indexes, cooldown/exclude-newer controls, hashes, pinning, lockfiles, and firewall posture."
+    },
+    {
+      "title": "M3: Dependency bots, CI install validation, and firewall posture",
+      "description": "Analyze Dependabot, Renovate, GitHub Actions install commands, and vendor-neutral package firewall/proxy posture. Align bot cooldowns with package-manager hardening."
+    },
+    {
+      "title": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "description": "Ship production-friendly JSON, Markdown, SARIF, GitHub Action, annotations, documentation, and release workflow for v0.1."
+    },
+    {
+      "title": "M5: Safe autofix and policy profiles v0.2",
+      "description": "Add conservative patch generation, profile-driven enforcement, policy schema validation, and safe autofix for low-risk package-manager and bot settings."
+    },
+    {
+      "title": "M6: Additional ecosystems v0.3",
+      "description": "Expand beyond Node/Python to JVM, .NET, Ruby, Rust, and Go package-manager hardening controls."
+    },
+    {
+      "title": "M7: Organization scale and plugin system v1.0",
+      "description": "Add org-level policy bundles, optional vendor API adapters, plugin interfaces, and large-scale rollout features."
+    }
+  ],
+  "issues": [
+    {
+      "id": "PW-001",
+      "title": "PW-001: Create repository scaffold, CLI entrypoint, and project conventions",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:chore",
+        "area:core",
+        "area:cli",
+        "size:M"
+      ],
+      "body": "## Summary\nCreate the initial PkgWarden repository structure and a working CLI skeleton that can run `pkgwarden scan <path>` without implementing full rule logic yet.\n\n## Scope\n- Establish source layout, package/module naming, dependency management, linting, tests, and local development commands.\n- Add CLI commands for `scan`, `version`, and `help`.\n- Include project metadata, license placeholder, README, and contribution stub.\n\n## Acceptance criteria\n- [ ] `pkgwarden scan .` runs and exits successfully against an empty fixture repo.\n- [ ] CLI supports `--format human|json` even if output is initially minimal.\n- [ ] Unit test and lint commands are documented and pass in CI.\n- [ ] README clearly states that PkgWarden is not an SCA/vulnerability scanner.\n\n## Implementation notes\nRecommended default stack: Go CLI with a statically compiled binary and a GitHub Action wrapper. If Ozark chooses another stack, preserve the same CLI contract and data model.\n\n## Non-goals\n- Do not implement vulnerability database lookup.\n- Do not call external vendor APIs in the foundation milestone.\n"
+    },
+    {
+      "id": "PW-002",
+      "title": "PW-002: Define scanner data model for inventory, evidence, findings, rules, and profiles",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:core",
+        "area:rules",
+        "area:policy",
+        "size:L"
+      ],
+      "body": "## Summary\nDefine the core domain objects that every parser, rule, and reporter will use.\n\n## Scope\n- Inventory model for ecosystems, package managers, manifests, lockfiles, CI workflows, dependency bots, and package-manager config files.\n- Finding model with id, title, severity, category, confidence, file path, line range, evidence, recommendation, references, and autofix metadata.\n- Rule model with id, ecosystem, category, severity, profile applicability, and remediation fields.\n- Profile model for baseline, strict, Socket Firewall, Veracode Package Firewall, and private-registry modes.\n\n## Acceptance criteria\n- [ ] JSON schema for scan output is committed.\n- [ ] Every finding can be traced to one or more evidence locations when possible.\n- [ ] Severity and confidence enums are documented.\n- [ ] Rules can be enabled/disabled by profile and by explicit policy configuration.\n\n## Implementation notes\nKeep the model vendor-neutral. Socket and Veracode should be profiles/integrations, not hard-coded assumptions.\n"
+    },
+    {
+      "id": "PW-003",
+      "title": "PW-003: Implement repository inventory walker",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:core",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nImplement a safe filesystem inventory engine that discovers relevant package-manager, dependency-bot, and CI files without scanning unnecessary directories.\n\n## Scope\n- Walk a target repository and identify manifests, lockfiles, package-manager config files, CI workflows, and bot configs.\n- Respect ignore directories such as `.git`, `node_modules`, virtualenvs, build outputs, caches, and vendored folders unless explicitly requested.\n- Support monorepos with multiple package roots.\n\n## Acceptance criteria\n- [ ] Inventory includes file paths, ecosystem guesses, and package-manager guesses.\n- [ ] Scanner handles nested workspaces and multiple package managers in one repo.\n- [ ] Ignored directories are covered by tests.\n- [ ] A missing or unreadable file produces a clear warning rather than a crash.\n\n## Dependencies\n- PW-002\n"
+    },
+    {
+      "id": "PW-004",
+      "title": "PW-004: Create parser abstraction and line-aware parse utilities",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:parser",
+        "area:core",
+        "size:L"
+      ],
+      "body": "## Summary\nCreate reusable parser interfaces for YAML, JSON, TOML, INI-style files, XML, shell-like package configs, and line-oriented requirements files.\n\n## Scope\n- Expose parsed values plus source file and line metadata.\n- Handle comments and duplicate keys where package-manager semantics require it.\n- Return structured parse errors as scanner warnings.\n\n## Acceptance criteria\n- [ ] Parsers can return evidence locations for at least JSON, YAML, TOML, INI, XML, and line-oriented text.\n- [ ] Parser tests cover malformed input and duplicate/overridden keys.\n- [ ] Rules can query config values without knowing the raw file format.\n\n## Dependencies\n- PW-002\n"
+    },
+    {
+      "id": "PW-005",
+      "title": "PW-005: Implement rule engine and baseline profile execution",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:rules",
+        "area:policy",
+        "size:L"
+      ],
+      "body": "## Summary\nImplement the engine that executes enabled rules against repository inventory and emits normalized findings.\n\n## Scope\n- Rule registration and execution order.\n- Profile selection via `--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry`.\n- Rule suppression via policy file and inline config where safe.\n- Deduplication of repeated findings.\n\n## Acceptance criteria\n- [ ] A sample no-op rule and sample failing rule execute through the engine.\n- [ ] Profile selection changes enabled rules.\n- [ ] Output includes rule id, category, severity, and recommendation.\n- [ ] Suppressed findings are tracked separately from active findings.\n\n## Dependencies\n- PW-002\n- PW-003\n- PW-004\n"
+    },
+    {
+      "id": "PW-006",
+      "title": "PW-006: Add fixture repository test harness",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:test",
+        "area:test-fixtures",
+        "area:core",
+        "size:M"
+      ],
+      "body": "## Summary\nCreate a fixture-based test harness so rules can be tested against realistic repository layouts.\n\n## Scope\n- Fixture repos for empty, single-package, monorepo, malformed config, and mixed ecosystem cases.\n- Golden JSON output tests for scanner results.\n- Utilities for adding small synthetic package-manager examples.\n\n## Acceptance criteria\n- [ ] At least five fixture repos are committed.\n- [ ] Golden output tests run in CI.\n- [ ] Test harness can run a subset of rules and profiles.\n- [ ] Contributors can add a fixture by following documented steps.\n\n## Dependencies\n- PW-001\n- PW-005\n"
+    },
+    {
+      "id": "PW-007",
+      "title": "PW-007: Implement human and JSON report output",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:reporting",
+        "area:cli",
+        "size:M"
+      ],
+      "body": "## Summary\nImplement initial scan reporting in human-readable terminal output and machine-readable JSON.\n\n## Scope\n- Human summary grouped by severity, ecosystem, and category.\n- Full JSON output matching the committed schema.\n- Exit-code behavior controlled by severity threshold.\n- Redaction of secrets in evidence fields.\n\n## Acceptance criteria\n- [ ] `--format human` and `--format json` produce useful output.\n- [ ] `--fail-on high` fails when a high-severity finding exists.\n- [ ] Output never prints raw package-manager tokens.\n- [ ] Snapshot tests cover report formatting.\n\n## Dependencies\n- PW-002\n- PW-005\n"
+    },
+    {
+      "id": "PW-008",
+      "title": "PW-008: Add `.pkgwarden.yml` policy file support",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:policy",
+        "area:core",
+        "size:M"
+      ],
+      "body": "## Summary\nAllow repositories to configure PkgWarden policy, approved registries, selected profiles, rule overrides, and suppressions.\n\n## Scope\n- Load `.pkgwarden.yml` from repo root by default.\n- Support approved registry endpoints, package firewall endpoints, default cooldown days, rule severity overrides, and explicit rule suppressions.\n- Validate policy schema and emit actionable errors.\n\n## Acceptance criteria\n- [ ] Example policy file is included.\n- [ ] Unknown keys produce warnings or schema errors depending on strictness setting.\n- [ ] Policy can enable a profile and override one rule severity.\n- [ ] Suppression requires a reason string.\n\n## Dependencies\n- PW-002\n- PW-005\n"
+    },
+    {
+      "id": "PW-009",
+      "title": "PW-009: Add initial documentation skeleton and non-goals page",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P1",
+        "type:docs",
+        "area:docs",
+        "size:S",
+        "good-first-issue"
+      ],
+      "body": "## Summary\nCreate docs that explain what PkgWarden does, what it intentionally does not do, and how users should interpret findings.\n\n## Scope\n- README overview.\n- Non-goals page.\n- MVP rule categories.\n- Basic installation and scan examples.\n\n## Acceptance criteria\n- [ ] Docs clearly state PkgWarden is a package-manager hardening advisor, not SCA.\n- [ ] Docs include a minimal example finding.\n- [ ] Docs explain profiles and severity at a high level.\n\n## Dependencies\n- PW-001\n"
+    },
+    {
+      "id": "PW-010",
+      "title": "PW-010: Add secret-redaction utility for package-manager evidence",
+      "milestone": "M0: Project foundation and scanner core",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:secrets",
+        "area:reporting",
+        "size:M"
+      ],
+      "body": "## Summary\nImplement shared redaction helpers so package-manager tokens and credentials are not exposed in scan output.\n\n## Scope\n- Recognize common token patterns in `.npmrc`, `.pypirc`, `pip.conf`, `poetry.toml`, `nuget.config`, `.yarnrc.yml`, and URLs.\n- Redact evidence while preserving enough context to explain the finding.\n- Add tests for edge cases.\n\n## Acceptance criteria\n- [ ] Raw auth tokens are not emitted in human, JSON, or future SARIF output.\n- [ ] Redaction utility is used by all report formats.\n- [ ] Tests cover URL credentials, bearer-like values, npm auth tokens, and environment variable placeholders.\n\n## Dependencies\n- PW-007\n"
+    },
+    {
+      "id": "PW-011",
+      "title": "PW-011: Detect Node.js package managers, manifests, lockfiles, and workspaces",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nImplement Node ecosystem inventory for npm, pnpm, Yarn, and Bun.\n\n## Scope\n- Detect `package.json`, `package-lock.json`, `npm-shrinkwrap.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `yarn.lock`, `.yarnrc.yml`, `bun.lock`, `bun.lockb`, and `bunfig.toml`.\n- Detect package manager from `packageManager` field, lockfiles, workspace files, and config files.\n- Handle monorepos and mixed package managers.\n\n## Acceptance criteria\n- [ ] Inventory identifies npm, pnpm, Yarn, and Bun correctly in fixture repos.\n- [ ] Workspace roots and package roots are represented separately.\n- [ ] Conflicting package-manager signals produce a warning finding.\n\n## Dependencies\n- PW-003\n- PW-004\n"
+    },
+    {
+      "id": "PW-012",
+      "title": "PW-012: Parse `.npmrc` and npm-related package config",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:parser",
+        "size:M"
+      ],
+      "body": "## Summary\nParse npm configuration from repo-level `.npmrc` and relevant package metadata.\n\n## Scope\n- Parse keys including `registry`, scoped registries, `min-release-age`, `before`, `ignore-scripts`, `audit`, `package-lock`, and auth-related keys.\n- Preserve line numbers and redacted evidence.\n- Detect scoped registry mappings and public registry fallback.\n\n## Acceptance criteria\n- [ ] Parser handles comments, duplicate keys, scoped keys, and environment-variable values.\n- [ ] Rules can query effective config values and evidence locations.\n- [ ] Tests cover npm registry, cooldown, and auth-token patterns.\n\n## Dependencies\n- PW-004\n- PW-010\n- PW-011\n"
+    },
+    {
+      "id": "PW-013",
+      "title": "PW-013: Implement npm cooldown and lockfile hardening rules",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:cooldown",
+        "area:lockfiles",
+        "area:rules",
+        "size:M"
+      ],
+      "body": "## Summary\nAdd npm rules for release-age cooldown and reproducible install posture.\n\n## Scope\n- Rule `npm.cooldown.min_release_age`: require or recommend `min-release-age` based on selected profile.\n- Rule `npm.cooldown.before_conflict`: warn when `before` and `min-release-age` create ambiguous or stale behavior.\n- Rule `npm.lockfile.required`: require `package-lock.json` or `npm-shrinkwrap.json` for npm projects.\n- Rule `npm.config.package_lock_not_disabled`: flag `package-lock=false`.\n\n## Acceptance criteria\n- [ ] Rules emit findings with exact file/line evidence where available.\n- [ ] Baseline recommends 7-day cooldown by default; strict can require configurable higher value.\n- [ ] Rules are covered by positive and negative fixtures.\n- [ ] Recommendations include safe snippets and explain possible install impact.\n\n## Dependencies\n- PW-012\n"
+    },
+    {
+      "id": "PW-014",
+      "title": "PW-014: Parse `pnpm-workspace.yaml` and legacy pnpm config locations",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:parser",
+        "size:M"
+      ],
+      "body": "## Summary\nParse pnpm project configuration with awareness that modern pnpm project settings belong in `pnpm-workspace.yaml`, while older repos may still use `.npmrc`.\n\n## Scope\n- Parse `minimumReleaseAge`, `minimumReleaseAgeStrict`, `minimumReleaseAgeExclude`, `strictDepBuilds`, `allowBuilds`, `ignoredBuiltDependencies`, `dangerouslyAllowAllBuilds`, `blockExoticSubdeps`, and `verifyDepsBeforeRun`.\n- Detect values in `.npmrc` that should be migrated or treated as legacy.\n- Preserve line metadata.\n\n## Acceptance criteria\n- [ ] Parser handles boolean, string, number, and list settings.\n- [ ] Legacy `.npmrc` values are captured and can produce migration recommendations.\n- [ ] Fixtures cover pnpm workspace and non-workspace repos.\n\n## Dependencies\n- PW-004\n- PW-011\n"
+    },
+    {
+      "id": "PW-015",
+      "title": "PW-015: Implement pnpm cooldown, build-script, exotic dependency, and verification rules",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:cooldown",
+        "area:install-scripts",
+        "area:lockfiles",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nAdd pnpm rules for minimum release age, dependency script execution, exotic dependency blocking, and dependency verification before run.\n\n## Scope\n- Rule `pnpm.cooldown.minimum_release_age`.\n- Rule `pnpm.scripts.strict_dep_builds`.\n- Rule `pnpm.scripts.no_dangerously_allow_all_builds`.\n- Rule `pnpm.scripts.allow_builds_reviewed`.\n- Rule `pnpm.exotic.block_exotic_subdeps`.\n- Rule `pnpm.verify_deps_before_run`.\n- Rule `pnpm.lockfile.frozen_install_ci` placeholder for CI integration.\n\n## Acceptance criteria\n- [ ] Rules distinguish missing, weak, and explicitly unsafe settings.\n- [ ] Findings explain when a setting may break installs and require review.\n- [ ] Positive and negative fixtures cover each rule.\n- [ ] Recommendations use `pnpm-workspace.yaml` as the preferred project config location.\n\n## Dependencies\n- PW-014\n"
+    },
+    {
+      "id": "PW-016",
+      "title": "PW-016: Parse `.yarnrc.yml` and Yarn project metadata",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:parser",
+        "size:M"
+      ],
+      "body": "## Summary\nParse Yarn configuration relevant to dependency hardening.\n\n## Scope\n- Parse `npmRegistryServer`, `npmScopes`, `npmMinimalAgeGate`, `npmPreapprovedPackages`, `enableHardenedMode`, `enableImmutableInstalls`, `enableNetwork`, `enableScripts`, `checksumBehavior`, and unsafe HTTP allowlists.\n- Detect Yarn Berry vs legacy Yarn where possible.\n- Preserve line metadata.\n\n## Acceptance criteria\n- [ ] Parser handles nested `npmScopes` registry configs.\n- [ ] Parser supports values needed for cooldown, registry, script, and checksum rules.\n- [ ] Malformed YAML produces scanner warning, not crash.\n\n## Dependencies\n- PW-004\n- PW-011\n"
+    },
+    {
+      "id": "PW-017",
+      "title": "PW-017: Implement Yarn cooldown, hardened mode, immutable install, script, and checksum rules",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:cooldown",
+        "area:install-scripts",
+        "area:lockfiles",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nAdd Yarn rules that check minimum package age, immutable installs, hardened mode, third-party script execution posture, and checksum behavior.\n\n## Scope\n- Rule `yarn.cooldown.npm_minimal_age_gate`.\n- Rule `yarn.hardened_mode.pr_context`.\n- Rule `yarn.install.immutable_ci` placeholder for CI validation.\n- Rule `yarn.scripts.enable_scripts`.\n- Rule `yarn.checksum.behavior`.\n- Rule `yarn.registry.scoped_mappings`.\n\n## Acceptance criteria\n- [ ] Rules identify missing or unsafe Yarn settings.\n- [ ] Findings distinguish local developer recommendations from CI-specific requirements.\n- [ ] Fixtures include Yarn Berry and legacy Yarn examples.\n- [ ] Recommendations include `.yarnrc.yml` snippets.\n\n## Dependencies\n- PW-016\n"
+    },
+    {
+      "id": "PW-018",
+      "title": "PW-018: Parse Bun config and implement Bun hardening rules",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:node",
+        "area:parser",
+        "area:cooldown",
+        "area:install-scripts",
+        "size:M"
+      ],
+      "body": "## Summary\nSupport Bun package-manager hardening checks.\n\n## Scope\n- Parse `bunfig.toml` install settings such as registry, minimum release age, frozen lockfile, and trusted dependencies.\n- Detect `bun.lock` or `bun.lockb`.\n- Implement rules for cooldown, trusted dependency scripts, and lockfile/frozen install posture.\n\n## Acceptance criteria\n- [ ] Bun projects are discovered and reported.\n- [ ] Rules emit findings for missing minimum release age and broad trusted dependency allowances.\n- [ ] Fixtures cover safe and unsafe Bun configs.\n\n## Dependencies\n- PW-011\n- PW-004\n"
+    },
+    {
+      "id": "PW-019",
+      "title": "PW-019: Detect exotic and high-risk dependency specifiers in Node manifests",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:node",
+        "area:registry",
+        "area:rules",
+        "size:M"
+      ],
+      "body": "## Summary\nFlag dependency declarations that bypass normal registry controls, such as git URLs, HTTP tarballs, local file paths, and unpinned aliases.\n\n## Scope\n- Inspect dependencies, devDependencies, optionalDependencies, peerDependencies, overrides/resolutions where applicable.\n- Classify git, GitHub shorthand, HTTP(S) tarball, file/link/workspace, npm alias, and unbounded version ranges.\n- Allow policy-based exceptions.\n\n## Acceptance criteria\n- [ ] Findings include package name, specifier type, manifest path, and line if available.\n- [ ] Workspace references are not treated as unsafe by default.\n- [ ] Policy can allow specific packages or specifier classes with a reason.\n\n## Dependencies\n- PW-011\n- PW-005\n- PW-008\n"
+    },
+    {
+      "id": "PW-020",
+      "title": "PW-020: Implement Node registry, firewall, and private-registry posture checks",
+      "milestone": "M1: Node.js package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:node",
+        "area:registry",
+        "area:firewall",
+        "vendor:socket",
+        "vendor:veracode",
+        "profile:private-registry",
+        "size:L"
+      ],
+      "body": "## Summary\nValidate whether Node package managers are configured to use approved registries, package firewalls, or internal artifact proxies.\n\n## Scope\n- Check npm, pnpm, Yarn, and Bun registry endpoints against `.pkgwarden.yml` approved registries.\n- Detect public registry bypass when a Socket, Veracode, or private-registry profile is selected.\n- Detect scoped registry mappings and missing mappings for private package scopes.\n- Flag plaintext HTTP registries unless explicitly allowed.\n\n## Acceptance criteria\n- [ ] Baseline reports registry posture without requiring a vendor.\n- [ ] Socket and Veracode profiles can require configured firewall/proxy endpoints.\n- [ ] Findings avoid claiming dashboard policy settings are verified unless API support exists.\n- [ ] Tests cover public registry, private proxy, Socket-style proxy URL, and Veracode-style endpoint examples.\n\n## Dependencies\n- PW-012\n- PW-016\n- PW-018\n- PW-008\n"
+    },
+    {
+      "id": "PW-021",
+      "title": "PW-021: Detect Python package managers, manifests, lockfiles, and config files",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:python",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nImplement Python ecosystem inventory for pip, uv, and Poetry.\n\n## Scope\n- Detect `requirements*.txt`, `constraints*.txt`, `pyproject.toml`, `uv.lock`, `poetry.lock`, `poetry.toml`, `pip.conf`, `pip.ini`, `.pip/pip.conf`, and `.pypirc`.\n- Identify likely manager: pip, uv, Poetry, or mixed.\n- Handle monorepos with multiple Python project roots.\n\n## Acceptance criteria\n- [ ] Inventory identifies pip, uv, and Poetry projects in fixtures.\n- [ ] Mixed manager repos produce a warning when configs conflict.\n- [ ] Relevant files include source locations and project root association.\n\n## Dependencies\n- PW-003\n- PW-004\n"
+    },
+    {
+      "id": "PW-022",
+      "title": "PW-022: Parse pip config, requirements, and constraints files",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:python",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nParse pip-oriented files for package index configuration, hash enforcement, pinning, and upload-age controls.\n\n## Scope\n- Parse `index-url`, `extra-index-url`, `trusted-host`, `require-hashes`, `no-index`, `find-links`, and `uploaded-prior-to` from config and requirements contexts.\n- Parse requirement lines enough to detect pinned/unpinned specs and hashes.\n- Preserve line metadata and comments where useful.\n\n## Acceptance criteria\n- [ ] Parser handles common requirements syntax, includes, constraints, environment markers, hashes, and comments.\n- [ ] Index settings are discoverable from both config files and requirements flags.\n- [ ] Tests cover malformed lines, nested requirements includes, and URL credentials with redaction.\n\n## Dependencies\n- PW-004\n- PW-010\n- PW-021\n"
+    },
+    {
+      "id": "PW-023",
+      "title": "PW-023: Implement pip dependency-confusion, hash, and pinning rules",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:python",
+        "area:registry",
+        "area:lockfiles",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nAdd pip rules that flag unsafe package index topology and missing integrity/pinning controls.\n\n## Scope\n- Rule `python.pip.extra_index_url_confusion`: warn on `extra-index-url` unless explicitly approved.\n- Rule `python.pip.require_hashes`: recommend/require `--require-hashes` for production requirement sets.\n- Rule `python.pip.requirements_pinned`: flag unpinned or broad dependency specs for production contexts.\n- Rule `python.pip.trusted_host_plain_http`: flag insecure trusted hosts and HTTP indexes.\n\n## Acceptance criteria\n- [ ] Findings explain dependency-confusion risk without claiming package vulnerability status.\n- [ ] Policy can classify requirement files as production, development, or test.\n- [ ] Hash rule handles all-lines-must-be-hashed semantics.\n- [ ] Fixtures cover safe private proxy, unsafe `extra-index-url`, and hash-enabled requirements.\n\n## Dependencies\n- PW-022\n- PW-008\n"
+    },
+    {
+      "id": "PW-024",
+      "title": "PW-024: Parse uv configuration and implement uv cooldown/lockfile rules",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:python",
+        "area:parser",
+        "area:cooldown",
+        "area:lockfiles",
+        "size:M"
+      ],
+      "body": "## Summary\nSupport uv projects and validate `exclude-newer`/lockfile posture.\n\n## Scope\n- Parse `[tool.uv]` and related uv config from `pyproject.toml` and standalone uv config files where present.\n- Detect `uv.lock`.\n- Implement rule `uv.cooldown.exclude_newer`.\n- Implement rule `uv.lockfile.required` and CI locked-install placeholder.\n\n## Acceptance criteria\n- [ ] uv projects are discovered through `pyproject.toml` and lockfiles.\n- [ ] Missing or weak `exclude-newer` produces a configurable finding.\n- [ ] Rules include recommendation for aligning Renovate `minimumReleaseAge` with uv `exclude-newer`.\n- [ ] Fixtures cover safe and unsafe uv projects.\n\n## Dependencies\n- PW-021\n- PW-004\n"
+    },
+    {
+      "id": "PW-025",
+      "title": "PW-025: Parse Poetry config and implement Poetry source/cooldown/lockfile rules",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:python",
+        "area:parser",
+        "area:cooldown",
+        "area:registry",
+        "area:lockfiles",
+        "size:L"
+      ],
+      "body": "## Summary\nSupport Poetry project hardening, including source configuration and minimum release-age controls where supported.\n\n## Scope\n- Parse `pyproject.toml`, `poetry.toml`, and relevant Poetry source settings.\n- Detect `poetry.lock`.\n- Implement rules for source priority/explicit sources, cooldown/min-release-age where supported by configured Poetry version, and lockfile presence.\n\n## Acceptance criteria\n- [ ] Poetry projects are discovered and reported.\n- [ ] Unsafe source topology and missing lockfile are flagged.\n- [ ] Cooldown rule gracefully handles unknown or unsupported Poetry versions.\n- [ ] Fixtures cover private source, PyPI fallback, and lockfile cases.\n\n## Dependencies\n- PW-021\n- PW-004\n"
+    },
+    {
+      "id": "PW-026",
+      "title": "PW-026: Implement Python registry, firewall, and private-index posture checks",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:python",
+        "area:registry",
+        "area:firewall",
+        "vendor:socket",
+        "vendor:veracode",
+        "profile:private-registry",
+        "size:L"
+      ],
+      "body": "## Summary\nValidate whether Python package managers are configured to use approved indexes, package firewalls, or internal artifact proxies.\n\n## Scope\n- Check pip, uv, and Poetry index/source endpoints against `.pkgwarden.yml` approved registries.\n- Detect public PyPI bypass when a Socket, Veracode, or private-registry profile is selected.\n- Flag plaintext HTTP and credentials in URLs.\n- Avoid claiming external firewall policy is verified unless an integration exists.\n\n## Acceptance criteria\n- [ ] Baseline reports Python index posture.\n- [ ] Socket and Veracode profiles can require configured firewall/proxy endpoints.\n- [ ] Findings provide precise file/line evidence and safe remediation guidance.\n- [ ] Fixtures cover direct PyPI, internal proxy, and firewall endpoint patterns.\n\n## Dependencies\n- PW-022\n- PW-024\n- PW-025\n- PW-008\n"
+    },
+    {
+      "id": "PW-027",
+      "title": "PW-027: Implement Python production requirements classification",
+      "milestone": "M2: Python package-manager hardening MVP",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:python",
+        "area:policy",
+        "area:rules",
+        "size:M"
+      ],
+      "body": "## Summary\nClassify requirement and dependency files by likely purpose so strict rules do not overfire on test/dev inputs.\n\n## Scope\n- Classify names such as `requirements.txt`, `requirements-prod.txt`, `requirements-dev.txt`, `constraints.txt`, and policy overrides.\n- Use classification in pinning/hash/cooldown severity decisions.\n- Document classification behavior.\n\n## Acceptance criteria\n- [ ] Policy can override file classification.\n- [ ] Production files default to stronger checks than dev/test files.\n- [ ] Human report shows why a file was treated as production or non-production.\n\n## Dependencies\n- PW-023\n- PW-008\n"
+    },
+    {
+      "id": "PW-028",
+      "title": "PW-028: Parse Dependabot configuration and implement cooldown rules",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:dependency-bots",
+        "area:cooldown",
+        "area:parser",
+        "size:M"
+      ],
+      "body": "## Summary\nParse `.github/dependabot.yml` and validate that dependency updates use cooldown periods aligned with PkgWarden policy.\n\n## Scope\n- Parse update entries, ecosystems, directories, schedules, groups, ignore rules, and cooldown settings.\n- Implement rule `dependabot.cooldown.required`.\n- Detect per-update cooldown coverage gaps for supported ecosystems.\n\n## Acceptance criteria\n- [ ] Dependabot config is parsed with file/line evidence.\n- [ ] Missing cooldown produces a finding when the ecosystem has package-manager cooldown expectations.\n- [ ] Rule can recommend default-days and semver-specific cooldown snippets.\n- [ ] Fixtures cover no config, partial config, and aligned config.\n\n## Dependencies\n- PW-004\n- PW-008\n"
+    },
+    {
+      "id": "PW-029",
+      "title": "PW-029: Parse Renovate configuration and implement minimum-release-age rules",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:dependency-bots",
+        "area:cooldown",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nParse Renovate configuration and validate `minimumReleaseAge` usage and alignment with package-manager native cooldowns.\n\n## Scope\n- Parse `renovate.json`, `.github/renovate.json`, `renovate.json5` where feasible, and packageRules.\n- Implement rule `renovate.minimum_release_age.required`.\n- Implement rule `renovate.minimum_release_age.native_alignment`.\n- Detect package rules that bypass cooldown.\n\n## Acceptance criteria\n- [ ] Renovate config is parsed with useful evidence.\n- [ ] Findings distinguish global and package-rule-specific minimum release age.\n- [ ] Rules recommend aligning Renovate with npm/pnpm/Yarn/Bun/uv/Poetry settings.\n- [ ] Fixtures cover missing, global, package-rule, and bypass cases.\n\n## Dependencies\n- PW-004\n- PW-013\n- PW-015\n- PW-017\n- PW-018\n- PW-024\n- PW-025\n"
+    },
+    {
+      "id": "PW-030",
+      "title": "PW-030: Parse GitHub Actions workflows for package-manager install commands",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:ci",
+        "area:github-action",
+        "area:parser",
+        "size:L"
+      ],
+      "body": "## Summary\nAnalyze GitHub Actions workflow commands to see whether CI enforces reproducible and hardened dependency installs.\n\n## Scope\n- Parse `.github/workflows/*.yml` and identify `run` commands invoking npm, pnpm, Yarn, Bun, pip, uv, and Poetry.\n- Detect install command variants such as `npm install`, `npm ci`, `pnpm install --frozen-lockfile`, `yarn install --immutable`, `bun install --frozen-lockfile`, `uv sync --locked`, and `pip install -r`.\n- Correlate workflows to package managers discovered in the repo.\n\n## Acceptance criteria\n- [ ] Workflow parser identifies install commands and associated file/line evidence.\n- [ ] Scanner can report when CI uses non-reproducible install commands.\n- [ ] Multiline run blocks and matrix workflows are supported well enough for MVP.\n- [ ] Fixtures cover common Node and Python CI workflows.\n\n## Dependencies\n- PW-004\n- PW-011\n- PW-021\n"
+    },
+    {
+      "id": "PW-031",
+      "title": "PW-031: Implement CI locked-install validation rules",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:ci",
+        "area:lockfiles",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nAdd rules that validate CI install commands enforce lockfiles and do not bypass package-manager hardening.\n\n## Scope\n- Rule `ci.node.npm_ci_required` for npm projects.\n- Rule `ci.node.pnpm_frozen_lockfile`.\n- Rule `ci.node.yarn_immutable`.\n- Rule `ci.node.bun_frozen_lockfile`.\n- Rule `ci.python.uv_locked_sync`.\n- Rule `ci.python.poetry_lock_consistency`.\n- Advisory rule for pip hash mode in production deploy workflows.\n\n## Acceptance criteria\n- [ ] Rules report specific workflows and commands that need changes.\n- [ ] Rules are profile-aware and avoid requiring unsupported settings.\n- [ ] Recommendations include safer command replacements.\n- [ ] Fixtures cover passing and failing CI workflows.\n\n## Dependencies\n- PW-030\n- PW-013\n- PW-015\n- PW-017\n- PW-018\n- PW-023\n- PW-024\n- PW-025\n"
+    },
+    {
+      "id": "PW-032",
+      "title": "PW-032: Implement firewall posture summary and vendor-neutral evidence model",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:firewall",
+        "area:registry",
+        "vendor:socket",
+        "vendor:veracode",
+        "size:M"
+      ],
+      "body": "## Summary\nCreate a single firewall/proxy posture summary that combines evidence from Node, Python, CI, and policy config.\n\n## Scope\n- Summarize whether package acquisition appears direct-to-public, internal-proxy, package-firewall, mixed, or unknown.\n- Show per-package-manager evidence.\n- Indicate when dashboard/API policy cannot be verified from repo-only data.\n\n## Acceptance criteria\n- [ ] Human and JSON reports include a firewall posture section.\n- [ ] Socket/Veracode profiles produce clear findings when endpoints are missing.\n- [ ] Repo-only limitations are explicitly stated in findings.\n- [ ] No finding claims external policy enforcement unless evidence exists.\n\n## Dependencies\n- PW-020\n- PW-026\n- PW-007\n"
+    },
+    {
+      "id": "PW-033",
+      "title": "PW-033: Implement token and plaintext registry hardening rules",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:secrets",
+        "area:registry",
+        "area:rules",
+        "size:M"
+      ],
+      "body": "## Summary\nFlag risky package-manager credential handling and insecure registry transport.\n\n## Scope\n- Detect likely committed static tokens in package-manager configs.\n- Detect credentials embedded in registry/index URLs.\n- Detect plaintext HTTP package sources unless explicitly allowed by policy.\n- Recommend environment-variable placeholders and secret managers.\n\n## Acceptance criteria\n- [ ] Findings are redacted but actionable.\n- [ ] Rules support npm, Yarn, pip, Poetry, uv, and NuGet-ready patterns.\n- [ ] Policy can allow known internal HTTP hosts with explicit reason.\n- [ ] Tests cover false-positive-resistant token detection.\n\n## Dependencies\n- PW-010\n- PW-020\n- PW-026\n"
+    },
+    {
+      "id": "PW-034",
+      "title": "PW-034: Generate Markdown report suitable for PR comments",
+      "milestone": "M3: Dependency bots, CI install validation, and firewall posture",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:reporting",
+        "area:github-action",
+        "size:M"
+      ],
+      "body": "## Summary\nAdd Markdown report output optimized for pull request comments and issue bodies.\n\n## Scope\n- Summary table by severity and category.\n- Top findings with file paths, evidence snippets, and remediation snippets.\n- Firewall posture summary.\n- Optional truncation for long reports.\n\n## Acceptance criteria\n- [ ] `--format markdown` produces readable output.\n- [ ] Report includes links/paths suitable for GitHub PR comments.\n- [ ] Long output is truncated deterministically with a note.\n- [ ] Snapshot tests cover formatting.\n\n## Dependencies\n- PW-007\n- PW-032\n"
+    },
+    {
+      "id": "PW-035",
+      "title": "PW-035: Implement SARIF output for GitHub code scanning",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:reporting",
+        "size:L"
+      ],
+      "body": "## Summary\nEmit SARIF output so PkgWarden findings can be uploaded to GitHub code scanning and other SARIF consumers.\n\n## Scope\n- Map findings to SARIF rules, results, levels, locations, and help text.\n- Include stable rule ids and references.\n- Redact secrets in SARIF evidence.\n- Validate generated SARIF against schema or test fixtures.\n\n## Acceptance criteria\n- [ ] `--format sarif` produces valid SARIF for sample findings.\n- [ ] GitHub code scanning upload accepts generated output in a fixture workflow.\n- [ ] SARIF rule metadata includes category, severity, and remediation summary.\n- [ ] Snapshot tests cover at least Node, Python, and CI findings.\n\n## Dependencies\n- PW-002\n- PW-007\n- PW-010\n"
+    },
+    {
+      "id": "PW-036",
+      "title": "PW-036: Create GitHub Action wrapper",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:github-action",
+        "area:ci",
+        "size:L"
+      ],
+      "body": "## Summary\nPackage PkgWarden as a GitHub Action that can scan repos, upload SARIF, and optionally comment on PRs.\n\n## Scope\n- Create `action.yml` inputs for profile, path, format, fail threshold, upload-sarif, comment-pr, and policy-file.\n- Run the PkgWarden binary in CI.\n- Document required permissions.\n- Support pull request and push workflows.\n\n## Acceptance criteria\n- [ ] Example workflow runs against fixture repo.\n- [ ] Action can produce SARIF artifact and upload it when enabled.\n- [ ] Action can emit Markdown summary to job summary.\n- [ ] Permissions are least-privilege and documented.\n\n## Dependencies\n- PW-035\n- PW-034\n"
+    },
+    {
+      "id": "PW-037",
+      "title": "PW-037: Add GitHub Actions annotations output",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:reporting",
+        "area:github-action",
+        "size:M"
+      ],
+      "body": "## Summary\nEmit GitHub workflow command annotations for findings with file/line evidence.\n\n## Scope\n- Map high/medium/low findings to error/warning/notice based on threshold settings.\n- Use redacted, short messages.\n- Avoid duplicate annotations for the same finding.\n\n## Acceptance criteria\n- [ ] Action logs include annotations for fixture findings.\n- [ ] Annotations link to the correct file/line where available.\n- [ ] Rules without line evidence are summarized without invalid annotations.\n\n## Dependencies\n- PW-036\n"
+    },
+    {
+      "id": "PW-038",
+      "title": "PW-038: Create public MVP rule catalog documentation",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P0",
+        "type:docs",
+        "area:docs",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nPublish a documented rule catalog for v0.1 that explains each rule, rationale, severity, profiles, and remediation.\n\n## Scope\n- One page per rule or generated catalog page.\n- Include examples of failing and passing config.\n- Include profile applicability and autofix availability.\n- Include non-goals and limitations.\n\n## Acceptance criteria\n- [ ] Every v0.1 rule has documentation.\n- [ ] Docs can be generated or checked for missing rule ids.\n- [ ] Docs avoid implying vulnerability scanning or package risk scoring.\n- [ ] Examples are accurate for npm, pnpm, Yarn, Bun, pip, uv, Poetry, Dependabot, and Renovate rules.\n\n## Dependencies\n- PW-013\n- PW-015\n- PW-017\n- PW-018\n- PW-023\n- PW-024\n- PW-025\n- PW-028\n- PW-029\n- PW-031\n- PW-032\n"
+    },
+    {
+      "id": "PW-039",
+      "title": "PW-039: Add release workflow, versioning, and binary distribution",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P0",
+        "type:chore",
+        "area:ci",
+        "area:cli",
+        "size:M"
+      ],
+      "body": "## Summary\nSet up repeatable releases for PkgWarden CLI and GitHub Action.\n\n## Scope\n- Versioning strategy and changelog.\n- Build binaries for major platforms if using a compiled CLI.\n- Create GitHub release artifacts.\n- Document installation.\n\n## Acceptance criteria\n- [ ] Release workflow can produce a test release.\n- [ ] Checksums are generated for release artifacts.\n- [ ] README installation instructions work against the release artifacts.\n- [ ] Action versioning strategy is documented.\n\n## Dependencies\n- PW-036\n"
+    },
+    {
+      "id": "PW-040",
+      "title": "PW-040: Build v0.1 end-to-end demo fixtures and smoke tests",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P0",
+        "type:test",
+        "area:test-fixtures",
+        "area:ci",
+        "size:L"
+      ],
+      "body": "## Summary\nCreate representative demo repositories and end-to-end smoke tests for the full v0.1 scope.\n\n## Scope\n- Unsafe Node repo with npm/pnpm/Yarn/Bun examples.\n- Unsafe Python repo with pip/uv/Poetry examples.\n- Repo with Socket/Veracode/private-registry profile expectations.\n- Repo with Dependabot, Renovate, and GitHub Actions workflows.\n- Expected human, JSON, Markdown, and SARIF outputs.\n\n## Acceptance criteria\n- [ ] E2E tests run in CI.\n- [ ] At least one demo repo produces actionable high/medium findings.\n- [ ] At least one demo repo passes baseline with no high findings.\n- [ ] Smoke tests cover CLI and GitHub Action invocation.\n\n## Dependencies\n- PW-035\n- PW-036\n- PW-038\n"
+    },
+    {
+      "id": "PW-041",
+      "title": "PW-041: Publish v0.1 launch README and quickstart",
+      "milestone": "M4: Reporting, GitHub Action, and releaseable v0.1",
+      "labels": [
+        "priority:P1",
+        "type:docs",
+        "area:docs",
+        "size:M"
+      ],
+      "body": "## Summary\nPrepare user-facing docs for the first public release.\n\n## Scope\n- Quickstart for local CLI.\n- Quickstart for GitHub Action.\n- Example reports.\n- Recommended baseline policy.\n- FAQ explaining relationship to SCA, package firewalls, Scorecard, and dependency bots.\n\n## Acceptance criteria\n- [ ] New users can run a scan in under five commands.\n- [ ] Docs include one baseline and one strict profile example.\n- [ ] FAQ clearly states how PkgWarden complements SCA and package firewalls.\n\n## Dependencies\n- PW-038\n- PW-039\n- PW-040\n"
+    },
+    {
+      "id": "PW-042",
+      "title": "PW-042: Implement patch/diff model for safe autofix",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:autofix",
+        "area:core",
+        "size:L"
+      ],
+      "body": "## Summary\nCreate a general patch model that can propose safe config changes without immediately mutating files.\n\n## Scope\n- Represent file edits with before/after context.\n- Support `--fix --dry-run` and `--fix --apply`.\n- Classify fixes as safe, review-required, or unsupported.\n- Prevent edits that would insert secrets or unknown registry endpoints.\n\n## Acceptance criteria\n- [ ] Dry-run prints or writes a unified diff.\n- [ ] Apply mode modifies files only when explicitly requested.\n- [ ] Conflicting/malformed files produce review-required results.\n- [ ] Autofix metadata is included in JSON output.\n\n## Dependencies\n- PW-002\n- PW-004\n- PW-007\n"
+    },
+    {
+      "id": "PW-043",
+      "title": "PW-043: Add safe autofix for npm cooldown and lockfile config",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:autofix",
+        "area:node",
+        "area:cooldown",
+        "size:M"
+      ],
+      "body": "## Summary\nImplement conservative fixes for npm settings that can be safely suggested without org-specific secrets.\n\n## Scope\n- Add or update `min-release-age` in `.npmrc`.\n- Avoid modifying registry or auth settings unless explicit approved registry policy is provided.\n- Optionally set `package-lock=true` if explicitly disabled.\n\n## Acceptance criteria\n- [ ] Dry-run diff adds `min-release-age=<policy default>` when missing.\n- [ ] Fix preserves comments where feasible.\n- [ ] Fix refuses to overwrite unknown conflicting values without review.\n\n## Dependencies\n- PW-042\n- PW-013\n"
+    },
+    {
+      "id": "PW-044",
+      "title": "PW-044: Add safe autofix for pnpm, Yarn, and Bun cooldown settings",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:autofix",
+        "area:node",
+        "area:cooldown",
+        "size:L"
+      ],
+      "body": "## Summary\nImplement safe patch generation for native Node package-manager cooldown/minimum-age controls.\n\n## Scope\n- pnpm: add or update `minimumReleaseAge` in `pnpm-workspace.yaml`.\n- Yarn: add or update `npmMinimalAgeGate` in `.yarnrc.yml`.\n- Bun: add or update `install.minimumReleaseAge` in `bunfig.toml`.\n- Treat build-script changes as review-required, not auto-apply by default.\n\n## Acceptance criteria\n- [ ] Dry-run diffs are valid YAML/TOML.\n- [ ] Apply mode preserves valid config and passes parser round-trip tests.\n- [ ] Autofix never enables broad script execution.\n\n## Dependencies\n- PW-042\n- PW-015\n- PW-017\n- PW-018\n"
+    },
+    {
+      "id": "PW-045",
+      "title": "PW-045: Add safe autofix for Dependabot and Renovate cooldowns",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:autofix",
+        "area:dependency-bots",
+        "area:cooldown",
+        "size:L"
+      ],
+      "body": "## Summary\nGenerate safe bot config changes to add missing cooldown/minimum-release-age settings.\n\n## Scope\n- Dependabot: add `cooldown` to applicable update entries.\n- Renovate: add global or packageRule `minimumReleaseAge` based on policy.\n- Avoid changing schedules, groups, or ignored dependencies unless explicitly requested.\n\n## Acceptance criteria\n- [ ] Dry-run diffs show minimal bot config changes.\n- [ ] Fix handles missing files by proposing starter configs when policy allows.\n- [ ] Renovate fixes respect existing packageRules and avoid duplicate settings.\n\n## Dependencies\n- PW-042\n- PW-028\n- PW-029\n"
+    },
+    {
+      "id": "PW-046",
+      "title": "PW-046: Define and validate policy profiles",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P0",
+        "type:feature",
+        "area:policy",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nCodify built-in profiles and make profile behavior transparent and testable.\n\n## Scope\n- Profiles: baseline, strict, socket-firewall, veracode-package-firewall, private-registry, regulated-ci, oss-maintainer.\n- For each profile, define enabled rules, default severities, required/optional controls, and default cooldown.\n- Add tests that verify rule/profile matrix.\n\n## Acceptance criteria\n- [ ] Profile matrix is generated into docs.\n- [ ] Selecting each profile changes rule requirements predictably.\n- [ ] Users can extend or override profile values in `.pkgwarden.yml`.\n\n## Dependencies\n- PW-008\n- PW-005\n- PW-038\n"
+    },
+    {
+      "id": "PW-047",
+      "title": "PW-047: Implement config precedence resolver",
+      "milestone": "M5: Safe autofix and policy profiles v0.2",
+      "labels": [
+        "priority:P1",
+        "type:feature",
+        "area:policy",
+        "area:core",
+        "size:M"
+      ],
+      "body": "## Summary\nResolve precedence between CLI flags, `.pkgwarden.yml`, built-in profiles, environment variables, and defaults.\n\n## Scope\n- Define deterministic precedence order.\n- Show effective policy in JSON output when requested.\n- Warn on contradictory settings.\n\n## Acceptance criteria\n- [ ] Precedence behavior is documented.\n- [ ] Tests cover CLI overriding policy and policy overriding profile defaults.\n- [ ] Contradictions produce actionable warnings.\n\n## Dependencies\n- PW-008\n- PW-046\n"
+    },
+    {
+      "id": "PW-048",
+      "title": "PW-048: Add Maven and Gradle hardening support",
+      "milestone": "M6: Additional ecosystems v0.3",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:ecosystem-jvm",
+        "area:registry",
+        "area:lockfiles",
+        "size:XL"
+      ],
+      "body": "## Summary\nExpand PkgWarden to JVM build tools with repository centralization, mirror/proxy posture, dependency verification, and lockfile checks.\n\n## Scope\n- Maven: parse `pom.xml` and relevant `settings.xml` patterns; flag public fallback and recommend repository manager mirror posture.\n- Gradle: parse `settings.gradle(.kts)` and `build.gradle(.kts)` enough to detect repositories and dependency verification metadata.\n- Rules for Gradle `FAIL_ON_PROJECT_REPOS`, dependency verification metadata, and repository centralization.\n\n## Acceptance criteria\n- [ ] JVM projects are discovered and reported.\n- [ ] Rules distinguish direct public repos from internal repository managers.\n- [ ] Fixtures cover Maven mirror, Gradle centralized repos, and unsafe project-level repos.\n\n## Dependencies\n- PW-005\n- PW-046\n"
+    },
+    {
+      "id": "PW-049",
+      "title": "PW-049: Add NuGet hardening support",
+      "milestone": "M6: Additional ecosystems v0.3",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:ecosystem-dotnet",
+        "area:registry",
+        "area:lockfiles",
+        "size:L"
+      ],
+      "body": "## Summary\nSupport NuGet package-source mapping, lockfiles, and private feed posture.\n\n## Scope\n- Parse `nuget.config`, `packages.lock.json`, and relevant project files.\n- Rules for package source mapping, locked restore, plaintext feeds, and credentials.\n- Private-registry profile support.\n\n## Acceptance criteria\n- [ ] NuGet projects are discovered.\n- [ ] Findings identify missing package source mapping for mixed feeds.\n- [ ] Fixtures cover safe and unsafe NuGet configs.\n\n## Dependencies\n- PW-005\n- PW-010\n- PW-046\n"
+    },
+    {
+      "id": "PW-050",
+      "title": "PW-050: Add Bundler/RubyGems hardening support",
+      "milestone": "M6: Additional ecosystems v0.3",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:ecosystem-ruby",
+        "area:registry",
+        "area:lockfiles",
+        "size:L"
+      ],
+      "body": "## Summary\nSupport Ruby Bundler hardening for mirrors, fallback behavior, lockfiles, and checksums.\n\n## Scope\n- Parse `Gemfile`, `Gemfile.lock`, and `.bundle/config`.\n- Rules for mirror/fallback timeout posture, lockfile presence, and lockfile checksums where supported.\n- Private-registry and package-firewall profile support.\n\n## Acceptance criteria\n- [ ] Bundler projects are discovered.\n- [ ] Findings include actionable mirror and checksum recommendations.\n- [ ] Fixtures cover direct RubyGems, internal mirror, fallback timeout, and checksum cases.\n\n## Dependencies\n- PW-005\n- PW-046\n"
+    },
+    {
+      "id": "PW-051",
+      "title": "PW-051: Add Cargo hardening support",
+      "milestone": "M6: Additional ecosystems v0.3",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:ecosystem-rust",
+        "area:registry",
+        "area:lockfiles",
+        "size:L"
+      ],
+      "body": "## Summary\nSupport Cargo source replacement, registry posture, lockfiles, and git dependency detection.\n\n## Scope\n- Parse `Cargo.toml`, `Cargo.lock`, and `.cargo/config.toml`.\n- Rules for source replacement, private registries, git/path dependencies, and lockfile presence for applications.\n- Socket Firewall profile support where applicable.\n\n## Acceptance criteria\n- [ ] Cargo projects are discovered.\n- [ ] Rules flag git dependencies and public registry bypass under private-registry profile.\n- [ ] Fixtures cover default crates.io, source replacement, and git dependency cases.\n\n## Dependencies\n- PW-005\n- PW-046\n"
+    },
+    {
+      "id": "PW-052",
+      "title": "PW-052: Add Go modules hardening support",
+      "milestone": "M6: Additional ecosystems v0.3",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:ecosystem-go",
+        "area:registry",
+        "area:lockfiles",
+        "size:L"
+      ],
+      "body": "## Summary\nSupport Go module proxy, checksum database, and private module posture checks.\n\n## Scope\n- Parse `go.mod`, `go.sum`, and repo-local Go environment/config hints where available.\n- Rules for `GOPROXY`, `GOSUMDB`, `GOPRIVATE`, `GONOSUMDB`, and missing `go.sum`.\n- Warn when checksum verification is disabled without policy rationale.\n\n## Acceptance criteria\n- [ ] Go modules are discovered.\n- [ ] Rules explain private module proxy/sumdb tradeoffs.\n- [ ] Fixtures cover public, private, and disabled checksum database scenarios.\n\n## Dependencies\n- PW-005\n- PW-046\n"
+    },
+    {
+      "id": "PW-053",
+      "title": "PW-053: Design plugin interface for custom rules and parsers",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P2",
+        "type:spike",
+        "area:integrations",
+        "area:rules",
+        "size:L"
+      ],
+      "body": "## Summary\nProduce and prototype a plugin interface that lets organizations add custom package-manager hardening rules without forking PkgWarden.\n\n## Scope\n- Evaluate in-process vs external plugin models.\n- Define stable contracts for inventory access, findings, rules, and policy.\n- Prototype one custom rule plugin.\n\n## Acceptance criteria\n- [ ] Architecture decision record is committed.\n- [ ] Prototype demonstrates a custom rule running against scanner inventory.\n- [ ] Security risks of plugin execution are documented.\n\n## Dependencies\n- PW-046\n"
+    },
+    {
+      "id": "PW-054",
+      "title": "PW-054: Spike Socket Firewall API adapter",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P2",
+        "type:spike",
+        "area:integrations",
+        "area:firewall",
+        "vendor:socket",
+        "size:M"
+      ],
+      "body": "## Summary\nResearch and prototype optional Socket API usage to validate org-level firewall policy settings that cannot be proven from repo files alone.\n\n## Scope\n- Identify API surfaces needed to verify cooldown policy and firewall mode.\n- Define auth requirements and least-privilege token handling.\n- Prototype read-only validation if feasible.\n\n## Acceptance criteria\n- [ ] Decision memo explains what can and cannot be verified through the API.\n- [ ] Prototype redacts all tokens and fails closed when auth is unavailable.\n- [ ] No repo-only rule depends on this integration.\n\n## Dependencies\n- PW-032\n- PW-046\n"
+    },
+    {
+      "id": "PW-055",
+      "title": "PW-055: Spike Veracode Package Firewall API adapter",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P2",
+        "type:spike",
+        "area:integrations",
+        "area:firewall",
+        "vendor:veracode",
+        "size:M"
+      ],
+      "body": "## Summary\nResearch and prototype optional Veracode Package Firewall API usage to validate external policy posture beyond local package-manager config.\n\n## Scope\n- Identify API surfaces for package firewall policy/rules validation.\n- Define auth requirements and safe token handling.\n- Prototype read-only validation if feasible.\n\n## Acceptance criteria\n- [ ] Decision memo explains what can and cannot be verified through the API.\n- [ ] Prototype does not expose secrets.\n- [ ] Repo-only Veracode profile remains usable without API credentials.\n\n## Dependencies\n- PW-032\n- PW-046\n"
+    },
+    {
+      "id": "PW-056",
+      "title": "PW-056: Add org-level policy bundles and baseline export",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P2",
+        "type:feature",
+        "area:policy",
+        "area:integrations",
+        "size:L"
+      ],
+      "body": "## Summary\nAllow organizations to publish reusable policy bundles that repos can consume or vendor locally.\n\n## Scope\n- Policy bundle format for approved registries, profile defaults, rule overrides, and suppressions.\n- Support local file and URL-based bundle references if safe.\n- Export effective policy for audit.\n\n## Acceptance criteria\n- [ ] Org bundle can be applied to a fixture repo.\n- [ ] Effective policy export includes source of each setting.\n- [ ] Remote bundle support is disabled by default or protected against unsafe fetch behavior.\n\n## Dependencies\n- PW-047\n"
+    },
+    {
+      "id": "PW-057",
+      "title": "PW-057: Create contributor onboarding and maintainer workflow",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P2",
+        "type:docs",
+        "area:docs",
+        "size:M"
+      ],
+      "body": "## Summary\nPrepare PkgWarden for external contributors and maintainers.\n\n## Scope\n- Contribution guide.\n- Rule authoring guide.\n- Fixture authoring guide.\n- Maintainer release checklist.\n- Security issue reporting process.\n\n## Acceptance criteria\n- [ ] A new contributor can add a simple rule using docs alone.\n- [ ] Security disclosure path is documented.\n- [ ] Maintainer checklist includes release and rule-doc validation.\n\n## Dependencies\n- PW-038\n- PW-039\n"
+    },
+    {
+      "id": "PW-058",
+      "title": "PW-058: Create governance and trademark/name usage note for PkgWarden",
+      "milestone": "M7: Organization scale and plugin system v1.0",
+      "labels": [
+        "priority:P3",
+        "type:docs",
+        "area:docs",
+        "size:S",
+        "status:needs-decision"
+      ],
+      "body": "## Summary\nDocument basic project governance, name usage, and ownership expectations for Ozark Security Labs.\n\n## Scope\n- Maintainer roles.\n- Decision process for adding rules/profiles.\n- Name/logo usage note.\n- License finalization.\n\n## Acceptance criteria\n- [ ] Governance document is committed.\n- [ ] License choice is explicit.\n- [ ] Project ownership and maintainership are clear.\n\n## Dependencies\n- PW-057\n"
+    }
+  ]
+}
