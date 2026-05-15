@@ -37,7 +37,7 @@ the explicit non-goals at [docs/NON_GOALS.md](docs/NON_GOALS.md).
 - `internal/reporting/` — human, JSON, Markdown, SARIF, annotation outputs.
 - `internal/autofix/` — patch model and safe fix generation (M5+).
 - `fixtures/` — fixture repositories and expected outputs.
-- `.github/` — workflows, issue templates, ruleset, seed data.
+- `.github/` — workflows, issue templates, ruleset.
 - `docs/` — product and implementation documentation.
 
 The Go package layout is documented in detail at
