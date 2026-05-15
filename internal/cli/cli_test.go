@@ -2,8 +2,11 @@ package cli
 
 import (
 	"bytes"
+	"encoding/json"
 	"strings"
 	"testing"
+
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
 )
 
 func TestScanEmptyRepoHuman(t *testing.T) {
@@ -43,8 +46,24 @@ func TestScanEmptyRepoJSON(t *testing.T) {
 	if code != 0 {
 		t.Fatalf("exit code = %d, stderr = %q", code, stderr.String())
 	}
-	if !strings.Contains(stdout.String(), `"findings": []`) {
-		t.Fatalf("stdout = %q, want empty findings array", stdout.String())
+	var report model.Report
+	if err := json.Unmarshal(stdout.Bytes(), &report); err != nil {
+		t.Fatalf("stdout is not valid report JSON: %v\n%s", err, stdout.String())
+	}
+	if report.Inventory.Manifests == nil {
+		t.Fatal("Inventory.Manifests is nil")
+	}
+	if len(report.Findings) != 0 {
+		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
+	}
+	if len(report.Rules) != 0 {
+		t.Fatalf("Rules len = %d, want 0", len(report.Rules))
+	}
+	if len(report.Profiles) == 0 {
+		t.Fatal("Profiles is empty")
+	}
+	if report.Policy.Rules.Disabled == nil {
+		t.Fatal("Policy.Rules.Disabled is nil")
 	}
 }
 

@@ -5,14 +5,20 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
 )
 
 func TestWriteHuman(t *testing.T) {
 	var out bytes.Buffer
-	report := Report{
+	report := model.Report{
 		SchemaVersion: "0.1.0",
 		Target:        "fixtures/empty-repo",
-		Findings:      []Finding{},
+		Inventory:     model.EmptyInventory(),
+		Findings:      []model.Finding{},
+		Rules:         []model.Rule{},
+		Profiles:      model.DefaultProfiles(),
+		Policy:        model.EmptyPolicy(),
 	}
 
 	if err := WriteHuman(&out, report); err != nil {
@@ -27,10 +33,14 @@ func TestWriteHuman(t *testing.T) {
 
 func TestWriteJSON(t *testing.T) {
 	var out bytes.Buffer
-	report := Report{
+	report := model.Report{
 		SchemaVersion: "0.1.0",
 		Target:        "fixtures/empty-repo",
-		Findings:      []Finding{},
+		Inventory:     model.EmptyInventory(),
+		Findings:      []model.Finding{},
+		Rules:         []model.Rule{},
+		Profiles:      model.DefaultProfiles(),
+		Policy:        model.EmptyPolicy(),
 	}
 
 	if err := WriteJSON(&out, report); err != nil {
@@ -42,5 +52,10 @@ func TestWriteJSON(t *testing.T) {
 	}
 	if !strings.Contains(out.String(), `"findings": []`) {
 		t.Fatalf("output = %q, want empty findings array", out.String())
+	}
+	for _, field := range []string{`"inventory": {`, `"rules": []`, `"profiles": [`, `"policy": {`} {
+		if !strings.Contains(out.String(), field) {
+			t.Fatalf("output = %q, want field %s", out.String(), field)
+		}
 	}
 }

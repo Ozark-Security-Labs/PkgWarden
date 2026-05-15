@@ -25,6 +25,10 @@ go run ./cmd/pkgwarden -- help
 
 The scan command accepts `--format human|json`.
 
+JSON output is the scan contract. The current model is documented in
+[docs/scan-output.md](docs/scan-output.md), with the committed schema at
+[docs/scan-output.schema.json](docs/scan-output.schema.json).
+
 ## Development
 
 ```bash
@@ -41,6 +45,8 @@ go build ./cmd/pkgwarden
 - PkgWarden does not execute analyzed repository code.
 - Findings must be evidence-bound and include file and line context when rule
   logic is added.
+- Socket Firewall and Veracode Package Firewall are modeled as profiles, not
+  hard-coded vendor assumptions.
 
 ## License
 
