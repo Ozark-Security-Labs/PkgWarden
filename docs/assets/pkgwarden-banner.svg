@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-label="PkgWarden">
+  <title>PkgWarden</title>
+  <desc>PkgWarden: package-manager and dependency-ingestion hardening</desc>
+  <rect width="720" height="200" rx="12" fill="#0b1220"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <text x="48" y="108" font-size="72" font-weight="700" fill="#e2e8f0">Pkg</text>
+    <text x="178" y="108" font-size="72" font-weight="700" fill="#38bdf8">Warden</text>
+    <text x="48" y="148" font-size="18" fill="#94a3b8">package-manager and dependency-ingestion hardening</text>
+  </g>
+  <g transform="translate(648, 60)">
+    <circle r="10" fill="#22c55e"/>
+    <circle r="10" cy="28" fill="#f59e0b"/>
+    <circle r="10" cy="56" fill="#ef4444"/>
+  </g>
+</svg>

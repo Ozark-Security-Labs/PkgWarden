@@ -1,79 +1,52 @@
-# PkgWarden
+<p align="center">
+  <img src="docs/assets/pkgwarden-banner.svg" alt="PkgWarden" width="640">
+</p>
 
-PkgWarden is a defensive supply-chain tool for mapping package-manager and
-dependency-ingestion hardening posture across a repository.
+<p align="center"><strong>Package-manager and dependency-ingestion hardening.</strong></p>
 
-It answers a simple question:
+<p align="center">
+  <a href="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/repo-hygiene.yml"><img alt="Repo hygiene" src="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/repo-hygiene.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/scorecard.yml"><img alt="Scorecard" src="https://github.com/Ozark-Security-Labs/PkgWarden/actions/workflows/scorecard.yml/badge.svg?branch=main"></a>
+  <a href="LICENSE"><img alt="License: AGPL-3.0-only" src="https://img.shields.io/badge/license-AGPL--3.0--only-blue.svg"></a>
+  <img alt="Go 1.23+" src="https://img.shields.io/badge/go-1.23%2B-00ADD8.svg">
+</p>
 
-> Are the package-manager, registry, firewall, lockfile, cooldown,
-> dependency-bot, and CI install settings hardened enough to reduce
-> supply-chain risk?
+---
 
-PkgWarden is intended for security engineers, AppSec teams, platform
-engineers, and maintainers who need a concrete inventory of dependency
-ingestion controls and the exact configuration changes required to harden
-them.
+PkgWarden maps package-manager and dependency-ingestion hardening posture across a repository. It answers a foundational supply-chain question — **how is this codebase actually acquiring its dependencies, and where are the controls weak?** — by inspecting manifests, lockfiles, package-manager config, dependency-bot config, and CI workflows, then reporting evidence-bound hardening gaps with file/line spans.
 
-## Problem
+Supply-chain compromise is often a configuration failure before it is a dependency failure. PkgWarden gives you the inventory.
 
-Most teams buy or deploy SCA and package-firewall tooling, but their
-repositories still contain weak or incomplete package-manager configuration.
-They often cannot answer:
+## Quickstart
 
-- Which package managers and lockfiles does this repository actually use?
-- Are packages fetched from approved registries or a package firewall?
-- Is there a cooldown or minimum-release-age in place for new versions?
-- Are install scripts allowed to execute during dependency resolution?
-- Is the dependency bot moving faster than the package-manager policy?
-- Does CI use reproducible, locked install commands?
-- Are plaintext credentials present in `.npmrc`, `pip.conf`, or Yarn config?
+Install from source:
 
-SCA scanners flag vulnerable dependencies. PkgWarden starts one layer
-earlier: inventory the configuration, attach evidence, and make the
-acquisition posture reviewable.
+```bash
+go install github.com/Ozark-Security-Labs/PkgWarden/cmd/pkgwarden@latest
+```
 
-## Product thesis
+Prebuilt binaries for Linux, macOS, and Windows will be attached to each [GitHub Release](https://github.com/Ozark-Security-Labs/PkgWarden/releases) starting with v0.1.
 
-Supply-chain compromise is often a configuration failure before it is a
-dependency failure.
+Then scan a repository:
 
-If reviewers can see the effective package-acquisition posture of a
-repository, they can spot weak cooldowns, registry bypass, missing lockfile
-enforcement, and unsafe install behavior before a malicious package lands.
+```bash
+pkgwarden scan . --profile baseline --format markdown --output pkgwarden.md
+```
 
-## Current scope
+Use it in CI with the GitHub Action (ships with v0.1):
 
-PkgWarden is a local CLI and CI-friendly analyzer that produces a structured
-hardening report.
+```yaml
+- uses: actions/checkout@v5
+- uses: Ozark-Security-Labs/PkgWarden@v0.1.0
+  with:
+    profile: baseline
+    output: markdown,json
+```
 
-Current built-in targets:
+## Sample output
 
-- npm, pnpm, Yarn, and Bun manifests, lockfiles, and config
-- pip, uv, and Poetry manifests, lockfiles, and config
-- Dependabot and Renovate configuration
-- GitHub Actions workflows (install-command analysis)
-- `.npmrc`, `pip.conf`, `.yarnrc.yml`, `bunfig.toml`, and equivalent
-  config files
-
-Current outputs:
-
-- Human CLI output
-- JSON hardening report
-- Markdown report (suitable for PR comments)
-- SARIF for code-scanning integration
-- GitHub Actions job summary and annotations
-
-The canonical JSON contract is documented in
-[docs/SCHEMA.md](docs/SCHEMA.md). Diagnostic categories, stable codes, and
-CI exit behavior are documented in [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md).
-Project configuration, profiles, approved registries, and rule overrides are
-documented in [docs/CONFIGURATION.md](docs/CONFIGURATION.md). Privacy and
-data-handling expectations are documented in
-[docs/DATA_HANDLING.md](docs/DATA_HANDLING.md). Installation, CLI usage,
-report interpretation, examples, and limitations are documented in
-[docs/USAGE.md](docs/USAGE.md).
-
-## Example report shape
+A scan of a Node + Python repository classifies each manager and surfaces hardening gaps:
 
 ```text
 File: .npmrc:1
@@ -88,138 +61,60 @@ Recommendation:
   - Or set minimum-release-age=20160 (14 days) under strict profile
 ```
 
-```text
-File: .github/dependabot.yml:5
-Manager: dependabot
-Rule: PW-BOT-002 dependency-bot cooldown shorter than package-manager
-Severity: medium
-Evidence:
-  - dependabot cooldown.default-days: 3
-  - .npmrc minimum-release-age: 7 days
-Recommendation:
-  - Align cooldown.default-days with package-manager minimum-release-age
-  - Or remove the package-manager cooldown if intentional
+The same scan emits JSON for automation (schema v1 contract):
+
+```json
+{
+  "rule_id": "pnpm.cooldown.minimum_release_age",
+  "title": "pnpm minimumReleaseAge is not configured",
+  "severity": "medium",
+  "confidence": "high",
+  "category": "cooldown",
+  "ecosystem": "node",
+  "package_manager": "pnpm",
+  "message": "Configure a release-age gate before accepting newly published packages."
+}
 ```
 
-## Core concepts
+A SARIF report covering the same findings is available for advisory GitHub code scanning.
 
-### Profiles
+## Supported ecosystems
 
-PkgWarden ships with composable profiles that select which rules apply and
-how strict each rule is:
+| Package manager        | Coverage area                                  |
+| ---------------------- | ---------------------------------------------- |
+| npm, pnpm, Yarn, Bun   | Node.js / TypeScript manifests, lockfiles, config |
+| pip, uv, Poetry        | Python manifests, lockfiles, config            |
+| Dependabot, Renovate   | Dependency-bot cooldown alignment              |
+| GitHub Actions         | CI install-command analysis                    |
 
-- `baseline` — 7-day cooldown, lockfile required, install scripts off by
-  default
-- `strict` — 14-day cooldown, signed lockfile entries where supported,
-  immutable installs in CI
-- `socket-firewall` — Socket Firewall posture, repo-evidence only
-- `veracode-package-firewall` — Veracode Package Firewall posture,
-  repo-evidence only
-- `private-registry` — approved-registry enforcement, plaintext-credential
-  checks
-- `regulated-ci` — locked installs, no network during build, signed releases
-- `oss-maintainer` — defaults tuned for upstream maintainers, lighter on
-  internal-registry checks
+Plus rule coverage for `.npmrc`, `pip.conf`, `.yarnrc.yml`, `bunfig.toml`, and equivalent package-manager config files. Java, .NET, Ruby, Rust, and Go ecosystems are scheduled for v0.3.
 
-### Rules and evidence
+## What you get
 
-PkgWarden findings are evidence-bound. Every finding includes:
+**Composable profiles.** `baseline`, `strict`, `socket-firewall`, `veracode-package-firewall`, `private-registry`, `regulated-ci`, and `oss-maintainer`. Each profile selects which rules apply and how strict each rule is. Defaults: 7-day cooldown (baseline), 14-day cooldown (strict).
 
-- the rule id and category (cooldown, lockfile, registry, install-scripts,
-  credentials, firewall, ci-install)
-- the file path and line number where the configuration was observed
-- the observed value and the expected value under the active profile
-- a concrete recommendation, often expressed as the exact line to change
-- optional autofix metadata (M5 and later)
+**Evidence-bound findings.** Every finding includes the rule ID, the file path and line, the observed value, the expected value under the active profile, and a concrete recommendation expressed as the exact line to change. Optional autofix metadata ships with M5.
 
-Findings never include the contents of secret-shaped values. Token-like
-strings are redacted in every output format.
+**Repository policy.** A `.pkgwarden.yml` file pins the active profile, declares approved registries, overrides rule severity, and records suppressions. See [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
 
-### Findings, not vulnerabilities
+**Token redaction.** Token-shaped values are redacted in every output format. Reports remain safe to attach to PRs and CI artifacts; see [docs/DATA_HANDLING.md](docs/DATA_HANDLING.md) for sensitivity and sharing guidance.
 
-PkgWarden complements SCA scanners and package firewalls; it does not
-replace them. It does not maintain a vulnerability database, score package
-risk, or detect malware. A clean PkgWarden report does not imply a clean
-dependency tree — it implies a hardened acquisition posture.
+**Advisory by default.** Findings are evidence-bound recommendations unless mechanically proven. Enforce mode is opt-in per CI step.
 
-## Quickstart
+## Output formats
 
-```bash
-go install github.com/Ozark-Security-Labs/PkgWarden/cmd/pkgwarden@latest
-pkgwarden version
-pkgwarden scan . --profile baseline --format human
-pkgwarden scan . --profile strict --format json --output pkgwarden.json
-pkgwarden scan . --profile baseline --format markdown --output pkgwarden.md
-```
+| Format   | Use it for                                                |
+| -------- | --------------------------------------------------------- |
+| Markdown | Human review, PR comments, GitHub Actions job summaries   |
+| JSON     | Automation and downstream tooling (schema v1 contract)    |
+| SARIF    | GitHub / GitLab code scanning, advisory alerts            |
+| Human    | Interactive CLI use                                       |
 
-Release archives contain the `pkgwarden` binary for each supported platform.
-Use the generated Markdown for human review and the JSON document for
-automation. PkgWarden redacts token-shaped values in generated artifacts, but
-reports can still contain registry hostnames and repository configuration and
-should be treated as review material. See
-[docs/DATA_HANDLING.md](docs/DATA_HANDLING.md) for local analysis, report
-sensitivity, CI artifact, SARIF, and sharing guidance.
+The canonical JSON contract is documented in [docs/SCHEMA.md](docs/SCHEMA.md).
 
-SARIF is available for advisory GitHub code-scanning integration:
+## CI integration
 
-```bash
-pkgwarden scan . --format sarif --output pkgwarden.sarif
-```
-
-A repository policy file (`.pkgwarden.yml`) can pin the active profile,
-declare approved registries, override rule severity, and record suppressions.
-See [docs/CONFIGURATION.md](docs/CONFIGURATION.md).
-
-```bash
-pkgwarden scan . --policy .pkgwarden.yml --fail-on high
-```
-
-See [docs/USAGE.md](docs/USAGE.md) for end-to-end examples, output
-interpretation, limitations, and defensive-use guidance.
-
-## Local development
-
-PkgWarden is implemented as a Go module. Supply-chain maintenance, lockfile
-review, dependency audit, and release sanity expectations are documented in
-[docs/SUPPLY_CHAIN.md](docs/SUPPLY_CHAIN.md). Versioning, changelog,
-compatibility, and tagged release expectations are documented in
-[docs/RELEASES.md](docs/RELEASES.md). Useful local commands:
-
-```bash
-go run ./cmd/pkgwarden version
-go run ./cmd/pkgwarden -- scan . --format human
-go run ./cmd/pkgwarden -- scan . --format json --output pkgwarden.json
-go run ./cmd/pkgwarden -- scan . --format sarif --output pkgwarden.sarif
-go test ./...
-go build ./...
-go vet ./...
-gofmt -l .
-```
-
-SARIF output is intended for GitHub code scanning. It emits advisory
-hardening alerts and scan diagnostics. PkgWarden risk and classification
-details are included as SARIF result properties rather than asserted as
-confirmed vulnerabilities.
-
-`pkgwarden scan` supports `--mode advisory|enforce`. In enforce mode the
-requested report is written first, then the process exits non-zero when any
-finding meets the configured `--fail-on` threshold or when scan diagnostics
-escalate to error severity. Warnings remain non-blocking by default.
-
-### Exit codes
-
-| Code | Meaning |
-| --- | --- |
-| 0 | Success |
-| 2 | CLI usage error, including unsupported `--profile` or `--format` values |
-| 10 | Target path does not exist or is not readable |
-| 11 | Enforce-mode target exists but contains no supported manifests |
-| 12 | Policy file cannot be read, parsed, or validated |
-| 13 | Scan pipeline failed for another reason |
-| 14 | Report rendering or writing failed |
-| 20 | Enforce-mode failure: findings met `--fail-on` threshold after the report was written |
-
-## GitHub Action
+Run PkgWarden on every pull request and gate enforcement on a severity threshold:
 
 ```yaml
 name: PkgWarden
@@ -234,87 +129,83 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: Ozark-Security-Labs/PkgWarden@v1
+      - uses: Ozark-Security-Labs/PkgWarden@v0.1.0
         with:
-          profile: baseline
+          profile: strict
+          mode: enforce
+          fail-on: high
           output: markdown,json
 ```
 
-The action writes Markdown output to the job summary and uploads generated
-reports as an artifact by default. These outputs can contain registry
-hostnames and configuration evidence; see
-[docs/DATA_HANDLING.md](docs/DATA_HANDLING.md). SARIF upload is optional and
-requires `security-events: write`:
+Enforce mode writes the requested reports first, then exits `20` when findings meet the `fail-on` threshold or scan diagnostics escalate to error severity. SARIF upload is optional and requires `security-events: write`. See [docs/GITHUB_ACTION.md](docs/GITHUB_ACTION.md) for all inputs, outputs, and permission details.
 
-```yaml
-permissions:
-  contents: read
-  security-events: write
+### Exit codes
 
-steps:
-  - uses: actions/checkout@v5
-  - uses: Ozark-Security-Labs/PkgWarden@v1
-    with:
-      profile: baseline
-      output: markdown,json,sarif
-      upload-sarif: "true"
-```
+| Code | Meaning                                                                              |
+| ---- | ------------------------------------------------------------------------------------ |
+| 0    | Success                                                                              |
+| 2    | CLI usage error, including unsupported `--profile` or `--format` values              |
+| 10   | Target path does not exist or is not readable                                        |
+| 11   | Enforce-mode target exists but contains no supported manifests                       |
+| 12   | Policy file cannot be read, parsed, or validated                                     |
+| 13   | Scan pipeline failed for another reason                                              |
+| 14   | Report rendering or writing failed                                                   |
+| 20   | Enforce-mode failure: findings met `--fail-on` threshold after the report was written |
 
-In enforce mode, PkgWarden still writes requested reports first, then
-returns exit code `20` when findings meet the `fail-on` threshold:
+## Project status
 
-```yaml
-steps:
-  - uses: actions/checkout@v5
-  - uses: Ozark-Security-Labs/PkgWarden@v1
-    with:
-      profile: strict
-      mode: enforce
-      fail-on: high
-      output: markdown,json
-```
+- **Pre-v0.1.** The scanner core (milestone M0, issues PW-001 through PW-010) is in active development. The CLI in `cmd/pkgwarden/` is currently a scaffold; rules and reporters land progressively across M0–M4.
+- **v0.1** will ship the first stable CLI, prebuilt binaries for Linux/macOS/Windows, the `Ozark-Security-Labs/PkgWarden` GitHub Action, the public rule catalog, and the SARIF reporter. See [docs/RELEASES.md](docs/RELEASES.md) and [docs/ROADMAP.md](docs/ROADMAP.md).
+- **JSON schema** — v1 contract; breaking changes ship via the documented compatibility policy.
+- **Go** — module targets Go 1.23, single module.
+- **Platforms** — Linux, macOS, and Windows are tested in CI on every push.
 
-See [docs/GITHUB_ACTION.md](docs/GITHUB_ACTION.md) for all inputs, outputs,
-and permission details.
+## Documentation
 
-## Relationship to adjacent projects
+| Document                                                                       | Contents                                                              |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| [docs/USAGE.md](docs/USAGE.md)                                                 | End-to-end CLI usage, output interpretation, defensive-use guidance   |
+| [docs/SCHEMA.md](docs/SCHEMA.md)                                               | JSON schema and contract                                              |
+| [docs/CONFIGURATION.md](docs/CONFIGURATION.md)                                 | `.pkgwarden.yml`, profiles, approved registries, rule overrides       |
+| [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md)                                     | Diagnostic categories, stable codes, exit behavior                    |
+| [docs/GITHUB_ACTION.md](docs/GITHUB_ACTION.md)                                 | All Action inputs, outputs, and permissions                           |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)                                   | Layered scanner design overview                                       |
+| [docs/IMPLEMENTATION_ARCHITECTURE.md](docs/IMPLEMENTATION_ARCHITECTURE.md)     | Go package layout and implementation patterns                         |
+| [docs/PARSERS_AND_ADAPTERS.md](docs/PARSERS_AND_ADAPTERS.md)                   | Parser conventions and line-aware spans                               |
+| [docs/PRODUCT_BRIEF.md](docs/PRODUCT_BRIEF.md)                                 | Product framing and threat model                                      |
+| [docs/NON_GOALS.md](docs/NON_GOALS.md)                                         | Explicit out-of-scope items                                           |
+| [docs/ROADMAP.md](docs/ROADMAP.md)                                             | Milestones and delivery plan                                          |
+| [docs/RELEASES.md](docs/RELEASES.md)                                           | Versioning, changelog, and compatibility policy                       |
+| [docs/SUPPLY_CHAIN.md](docs/SUPPLY_CHAIN.md)                                   | Dependency, lockfile, and CI security policy                          |
+| [docs/DATA_HANDLING.md](docs/DATA_HANDLING.md)                                 | Report sensitivity, redaction, and sharing guidance                   |
 
-PkgWarden complements supply-chain tooling rather than replacing it:
+## Security
 
-- Veracode SCA, Socket, and OSV-based scanners answer "is this dependency
-  vulnerable?". PkgWarden answers "is this repository configured to
-  resist a supply-chain compromise?".
-- Dependabot, Renovate, and GitHub dependency review keep dependencies
-  current and flag vulnerable upgrades. PkgWarden makes sure their
-  cooldowns and policies match the package manager.
-- Veracode Package Firewall and Socket Firewall enforce policy at the
-  registry boundary. PkgWarden checks that the repository is configured to
-  use them and not to bypass them.
-- [AuthMap](https://github.com/Ozark-Security-Labs/AuthMap) maps
-  authorization coverage in application code. PkgWarden maps
-  package-acquisition posture in repository configuration. They share the
-  Ozark Security Labs evidence-bound finding style.
+PkgWarden is intended for authorized, defensive analysis of repositories that you own or are explicitly approved to review. Report vulnerabilities privately via GitHub Security Advisories — see [SECURITY.md](SECURITY.md).
+
+Supply-chain posture:
+
+- All GitHub Actions in workflows are pinned to a full commit SHA.
+- CI runs `Ozark-Security-Labs/deterministic-deps` (advisory) and OpenSSF Scorecard on every PR and push to `main`.
+- Cross-platform CI matrix runs `go build`, `go test`, `go vet`, and `gofmt` on Linux, macOS, and Windows.
+
+Details in [docs/SUPPLY_CHAIN.md](docs/SUPPLY_CHAIN.md).
+
+## Contributing
+
+Design-first contributions are welcome — new rules and fixtures, ecosystem coverage, documentation, and reviewable detections.
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) — how to propose and submit changes
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — community standards
+- [CHANGELOG.md](CHANGELOG.md) — what changed and when
+- [SUPPORT.md](SUPPORT.md) — getting help
+
+Reference the relevant `PW-###` issue id in commit messages and pull request descriptions.
 
 ## Non-goals
 
-PkgWarden is not intended to:
+PkgWarden does not maintain a CVE database, score package reputation, detect malware, replace SCA or package-firewall products, scan license compliance, generate an SBOM as a primary feature, or perform exploitability analysis. A clean PkgWarden report does not imply a clean dependency tree — it implies a hardened acquisition posture.
 
-- maintain a CVE database or score package vulnerability
-- score package reputation
-- detect malware in dependency contents
-- replace SCA, package firewall, or dependency-graph products
-- scan license compliance
-- generate an SBOM as a primary feature
-- perform exploitability analysis on findings
-- exploit, attack, or modify live registry infrastructure
+## License
 
-See [SECURITY.md](SECURITY.md) for authorized-use boundaries and finding
-language. PkgWarden reports evidence-bound recommendations unless a finding
-is mechanically proven.
-
-## Status
-
-This repository currently contains the product scaffold, Go CLI skeleton,
-documentation, CI baseline, and security configuration. The scanner
-implementation is tracked in milestone *M0: Project foundation and scanner
-core* and downstream milestones; see [docs/ROADMAP.md](docs/ROADMAP.md).
+PkgWarden is licensed under the [GNU Affero General Public License v3.0 only](LICENSE) (`AGPL-3.0-only`).
