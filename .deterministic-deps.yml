@@ -7,20 +7,16 @@ remote-validation: true
 include:
   - .github/workflows/*.yml
   - .github/workflows/*.yaml
-  - package.json
-  - package-lock.json
-  - Cargo.toml
-  - Cargo.lock
-  - crates/**/Cargo.toml
+  - go.mod
+  - go.sum
+  - go.work
+  - go.work.sum
   - Dockerfile
   - docker-compose.yml
-  - requirements*.txt
-  - pyproject.toml
 
 exclude:
-  - node_modules/**
-  - target/**
+  - vendor/**
+  - bin/**
   - dist/**
-  - coverage/**
 
 allowlist: []
