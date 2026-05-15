@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Keep the template itself quiet: every generated repository has GitHub Actions,
+  # but not every generated repository has npm or Cargo manifests.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    labels:
+      - dependencies
+      - ci
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 5

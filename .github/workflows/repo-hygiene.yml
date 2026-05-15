@@ -1,0 +1,36 @@
+name: repo hygiene
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    name: repository hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Check whitespace
+        shell: bash
+        run: git diff --check HEAD~1..HEAD || git diff --check
+
+      - name: Dependency determinism
+        id: deterministic-deps
+        uses: Ozark-Security-Labs/deterministic-deps@3333c99d112d075bfeb8df7a26f21155b2b8db9f
+        with:
+          mode: advisory
+          severity-threshold: low
+          # Keep the private template repo compatible without GitHub Advanced
+          # Security. Generated public/GHAS-enabled repos can turn SARIF on and
+          # add a pinned github/codeql-action/upload-sarif step.
+          sarif: false
+          remote-validation: true

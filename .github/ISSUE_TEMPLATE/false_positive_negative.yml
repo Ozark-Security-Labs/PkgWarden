@@ -1,0 +1,33 @@
+name: False positive / false negative
+description: Report incorrect scanner/rule behavior.
+title: '[accuracy]: '
+labels: ['accuracy']
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - False positive
+        - False negative
+        - Unclear / needs triage
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal code or config sample
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Current output
+      render: text
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected output
+    validations:
+      required: true

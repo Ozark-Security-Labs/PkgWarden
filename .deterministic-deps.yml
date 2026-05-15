@@ -1,0 +1,26 @@
+mode: advisory
+severity-threshold: low
+sarif: true
+patch: false
+remote-validation: true
+
+include:
+  - .github/workflows/*.yml
+  - .github/workflows/*.yaml
+  - package.json
+  - package-lock.json
+  - Cargo.toml
+  - Cargo.lock
+  - crates/**/Cargo.toml
+  - Dockerfile
+  - docker-compose.yml
+  - requirements*.txt
+  - pyproject.toml
+
+exclude:
+  - node_modules/**
+  - target/**
+  - dist/**
+  - coverage/**
+
+allowlist: []
