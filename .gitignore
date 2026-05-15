@@ -11,26 +11,20 @@
 .env.*
 !.env.example
 
-# Node/TypeScript
-node_modules/
-dist/
-lib/
-coverage/
-*.tsbuildinfo
-
-# Rust
-/target/
-**/*.rs.bk
-*.pdb
-
-# Python
-__pycache__/
-*.py[cod]
-.venv/
-venv/
-.pytest_cache/
-.mypy_cache/
+# Go
+/bin/
+/dist/
+*.exe
+*.test
+coverage.out
+coverage.html
+/pkgwarden
+/pkgwarden.exe
+vendor/
 
 # Generated reports
 *-report/
 .sarif/
+pkgwarden.sarif
+pkgwarden.json
+pkgwarden.md

@@ -5,7 +5,7 @@ framework support, and false positives or false negatives.
 
 Before opening an issue, include:
 
-- PROJECT_NAME version or commit.
+- PkgWarden version or commit.
 - Operating system and runtime/toolchain version.
 - Minimal reproduction or fixture.
 - Relevant configuration excerpt.

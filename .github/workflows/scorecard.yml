@@ -1,13 +1,7 @@
 # OpenSSF Scorecard workflow.
 #
-# Optional template. Copy to `.github/workflows/scorecard.yml` in the
-# generated repository. Requires:
-#   - A public repository (or GitHub Advanced Security for private repos)
-#     for SARIF upload to the security tab.
-#   - `publish_results: true` requires the repo to be public.
-#
-# Dependabot (.github/dependabot.yml) will keep the pinned action SHAs
-# below current after adoption.
+# Dependabot keeps the pinned action SHAs below current. SARIF upload requires
+# the repository to be public or to have GitHub Advanced Security.
 
 name: scorecard
 
@@ -41,8 +35,6 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-          # Publishing results enables the public Scorecard badge.
-          # Requires a public repository.
           publish_results: true
 
       - name: Upload SARIF artifact
