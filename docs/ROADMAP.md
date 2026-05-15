@@ -2,8 +2,8 @@
 
 PkgWarden delivery is organized into eight milestones. The detailed issue
 backlog (PW-001 through PW-058) is tracked in the
-`Ozark-Security-Labs/PkgWarden` GitHub issues; see `.github/seed/` for the
-canonical seed data.
+`Ozark-Security-Labs/PkgWarden` GitHub issues, which are the canonical
+source of truth.
 
 ## M0: Project foundation and scanner core
 
