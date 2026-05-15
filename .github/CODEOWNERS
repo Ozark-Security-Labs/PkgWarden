@@ -1,0 +1,16 @@
+# CODEOWNERS for PROJECT_NAME
+#
+# Code owners are auto-requested for review on pull requests touching
+# matching paths. Replace the placeholder team after creating the
+# repository from this template.
+#
+# Syntax: https://docs.github.com/articles/about-code-owners
+
+*                              @Ozark-Security-Labs/maintainers
+
+# Security-sensitive surfaces require security review.
+/SECURITY.md                   @Ozark-Security-Labs/security
+/.github/                      @Ozark-Security-Labs/security
+/.github/workflows/            @Ozark-Security-Labs/security
+/.github/rulesets/             @Ozark-Security-Labs/security
+/.deterministic-deps.yml       @Ozark-Security-Labs/security

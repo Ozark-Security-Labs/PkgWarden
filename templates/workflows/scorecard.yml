@@ -1,0 +1,58 @@
+# OpenSSF Scorecard workflow.
+#
+# Optional template. Copy to `.github/workflows/scorecard.yml` in the
+# generated repository. Requires:
+#   - A public repository (or GitHub Advanced Security for private repos)
+#     for SARIF upload to the security tab.
+#   - `publish_results: true` requires the repo to be public.
+#
+# Dependabot (.github/dependabot.yml) will keep the pinned action SHAs
+# below current after adoption.
+
+name: scorecard
+
+on:
+  branch_protection_rule:
+  schedule:
+    - cron: "0 6 * * 1"
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+jobs:
+  analysis:
+    name: scorecard analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
+
+      - name: Run Scorecard analysis
+        uses: ossf/scorecard-action@62b2cac7ed8198b15735ed49ab1e5cf35480ba46
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          # Publishing results enables the public Scorecard badge.
+          # Requires a public repository.
+          publish_results: true
+
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: scorecard-sarif
+          path: results.sarif
+          retention-days: 5
+
+      - name: Upload SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@4f3212b61783c3c68e8309a0f18a699764811cda
+        with:
+          sarif_file: results.sarif
