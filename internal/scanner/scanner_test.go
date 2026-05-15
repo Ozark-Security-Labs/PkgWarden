@@ -1,6 +1,13 @@
 package scanner
 
-import "testing"
+import (
+	"os"
+	"path/filepath"
+	"runtime"
+	"testing"
+
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
+)
 
 func TestScanExistingDirectory(t *testing.T) {
 	report, err := Scan("../../fixtures/empty-repo")
@@ -16,6 +23,9 @@ func TestScanExistingDirectory(t *testing.T) {
 	}
 	if len(report.Findings) != 0 {
 		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
+	}
+	if len(report.Warnings) != 0 {
+		t.Fatalf("Warnings len = %d, want 0", len(report.Warnings))
 	}
 	if len(report.Inventory.Manifests) != 0 {
 		t.Fatalf("Inventory.Manifests len = %d, want 0", len(report.Inventory.Manifests))
@@ -37,4 +47,110 @@ func TestScanMissingTarget(t *testing.T) {
 	if err == nil {
 		t.Fatal("Scan returned nil error for missing target")
 	}
+}
+
+func TestScanInventoryMonorepo(t *testing.T) {
+	report, err := Scan("../../fixtures/inventory-monorepo")
+
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	assertInventoryPath(t, report.Inventory.Manifests, "package.json", "node", "npm")
+	assertInventoryPath(t, report.Inventory.Manifests, "apps/api/go.mod", "go", "go")
+	assertInventoryPath(t, report.Inventory.Manifests, "services/worker/pyproject.toml", "python", "python")
+	assertInventoryPath(t, report.Inventory.Manifests, "services/worker/requirements-dev.txt", "python", "pip")
+	assertInventoryPath(t, report.Inventory.Lockfiles, "package-lock.json", "node", "npm")
+	assertInventoryPath(t, report.Inventory.Lockfiles, "apps/api/go.sum", "go", "go")
+	assertInventoryPath(t, report.Inventory.Lockfiles, "services/worker/poetry.lock", "python", "poetry")
+	assertInventoryPath(t, report.Inventory.PackageManagerConfigFiles, ".npmrc", "node", "npm")
+	assertInventoryPath(t, report.Inventory.PackageManagerConfigFiles, "services/worker/poetry.toml", "python", "poetry")
+	assertInventoryPath(t, report.Inventory.CIWorkflows, ".github/workflows/ci.yml", "", "")
+	assertInventoryPath(t, report.Inventory.DependencyBots, ".github/dependabot.yml", "", "")
+
+	assertSummary(t, report.Inventory.Ecosystems, "go")
+	assertSummary(t, report.Inventory.Ecosystems, "node")
+	assertSummary(t, report.Inventory.Ecosystems, "python")
+	assertSummary(t, report.Inventory.PackageManagers, "go")
+	assertSummary(t, report.Inventory.PackageManagers, "npm")
+	assertSummary(t, report.Inventory.PackageManagers, "poetry")
+
+	assertInventoryPathAbsent(t, report.Inventory.Manifests, "node_modules/ignored/package.json")
+	assertInventoryPathAbsent(t, report.Inventory.Manifests, "vendor/ignored/go.mod")
+	assertInventoryPathAbsent(t, report.Inventory.Lockfiles, "dist/package-lock.json")
+	assertInventoryPathAbsent(t, report.Inventory.Manifests, ".venv/pyproject.toml")
+}
+
+func TestScanWarnsOnUnreadableWalkEntry(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("chmod permission behavior differs on windows")
+	}
+
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "package.json"), []byte("{}\n"), 0o644); err != nil {
+		t.Fatalf("write package.json: %v", err)
+	}
+	locked := filepath.Join(root, "locked")
+	if err := os.Mkdir(locked, 0o755); err != nil {
+		t.Fatalf("mkdir locked: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(locked, "package-lock.json"), []byte("{}\n"), 0o644); err != nil {
+		t.Fatalf("write locked file: %v", err)
+	}
+	if err := os.Chmod(locked, 0); err != nil {
+		t.Fatalf("chmod locked: %v", err)
+	}
+	defer os.Chmod(locked, 0o755)
+
+	report, err := Scan(root)
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	if len(report.Warnings) == 0 {
+		t.Fatal("Warnings len = 0, want warning for unreadable directory")
+	}
+	assertInventoryPath(t, report.Inventory.Manifests, "package.json", "node", "npm")
+	assertInventoryPathAbsent(t, report.Inventory.Lockfiles, "locked/package-lock.json")
+}
+
+func assertInventoryPath(t *testing.T, items []model.InventoryItem, path string, ecosystem string, packageManager string) {
+	t.Helper()
+	for _, item := range items {
+		if len(item.Locations) == 0 {
+			continue
+		}
+		if item.Locations[0].Path == path {
+			if item.Ecosystem != ecosystem {
+				t.Fatalf("%s ecosystem = %q, want %q", path, item.Ecosystem, ecosystem)
+			}
+			if item.PackageManager != packageManager {
+				t.Fatalf("%s package manager = %q, want %q", path, item.PackageManager, packageManager)
+			}
+			return
+		}
+	}
+	t.Fatalf("inventory path %q not found in %#v", path, items)
+}
+
+func assertInventoryPathAbsent(t *testing.T, items []model.InventoryItem, path string) {
+	t.Helper()
+	for _, item := range items {
+		for _, location := range item.Locations {
+			if location.Path == path {
+				t.Fatalf("inventory path %q unexpectedly found", path)
+			}
+		}
+	}
+}
+
+func assertSummary(t *testing.T, items []model.InventoryItem, name string) {
+	t.Helper()
+	for _, item := range items {
+		if item.Name == name {
+			if len(item.Locations) == 0 {
+				t.Fatalf("summary %q has no locations", name)
+			}
+			return
+		}
+	}
+	t.Fatalf("summary %q not found in %#v", name, items)
 }

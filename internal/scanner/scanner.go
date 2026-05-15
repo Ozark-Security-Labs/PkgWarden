@@ -18,10 +18,13 @@ func Scan(target string) (model.Report, error) {
 		return model.Report{}, fmt.Errorf("target is not a directory: %s", target)
 	}
 
+	inventory, warnings := inventoryFor(target)
+
 	return model.Report{
 		SchemaVersion: schemaVersion,
 		Target:        target,
-		Inventory:     model.EmptyInventory(),
+		Inventory:     inventory,
+		Warnings:      warnings,
 		Findings:      []model.Finding{},
 		Rules:         []model.Rule{},
 		Profiles:      model.DefaultProfiles(),

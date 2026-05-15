@@ -9,9 +9,9 @@ configuration and reports evidence-bound hardening recommendations.
 
 ## Current status
 
-This repository is in the M0 foundation milestone. The CLI can run a minimal
-scan and emit deterministic zero-finding output, but package-manager rules are
-not implemented yet.
+This repository is in the M0 foundation milestone. The CLI can inventory
+package-manager, CI, and dependency-bot files and emit deterministic
+zero-finding output, but package-manager rules are not implemented yet.
 
 ## CLI
 
@@ -28,6 +28,10 @@ The scan command accepts `--format human|json`.
 JSON output is the scan contract. The current model is documented in
 [docs/scan-output.md](docs/scan-output.md), with the committed schema at
 [docs/scan-output.schema.json](docs/scan-output.schema.json).
+
+Repository inventory walks skip common generated, vendored, cache, and
+environment directories such as `.git`, `node_modules`, `vendor`, `.venv`,
+`dist`, `build`, and `target`.
 
 ## Development
 

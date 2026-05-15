@@ -32,6 +32,7 @@ type Report struct {
 	SchemaVersion string    `json:"schema_version"`
 	Target        string    `json:"target"`
 	Inventory     Inventory `json:"inventory"`
+	Warnings      []Warning `json:"warnings"`
 	Findings      []Finding `json:"findings"`
 	Rules         []Rule    `json:"rules"`
 	Profiles      []Profile `json:"profiles"`
@@ -49,10 +50,17 @@ type Inventory struct {
 }
 
 type InventoryItem struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Kind      string     `json:"kind"`
-	Locations []Location `json:"locations"`
+	ID             string     `json:"id"`
+	Name           string     `json:"name"`
+	Kind           string     `json:"kind"`
+	Ecosystem      string     `json:"ecosystem,omitempty"`
+	PackageManager string     `json:"package_manager,omitempty"`
+	Locations      []Location `json:"locations"`
+}
+
+type Warning struct {
+	Path    string `json:"path"`
+	Message string `json:"message"`
 }
 
 type Location struct {

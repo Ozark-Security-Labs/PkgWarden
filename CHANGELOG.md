@@ -12,5 +12,7 @@ This project follows a practical changelog style organized by release.
   milestone.
 - Define the scan-output data model for inventory, evidence, findings, rules,
   profiles, policy overrides, and the committed JSON Schema.
+- Add repository inventory walking for package-manager files, CI workflows, and
+  dependency-bot configuration.
 - Add CI and local development commands for formatting, vetting, testing, and
   building.

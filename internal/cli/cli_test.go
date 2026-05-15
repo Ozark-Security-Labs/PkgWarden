@@ -53,6 +53,9 @@ func TestScanEmptyRepoJSON(t *testing.T) {
 	if report.Inventory.Manifests == nil {
 		t.Fatal("Inventory.Manifests is nil")
 	}
+	if report.Warnings == nil {
+		t.Fatal("Warnings is nil")
+	}
 	if len(report.Findings) != 0 {
 		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
 	}
