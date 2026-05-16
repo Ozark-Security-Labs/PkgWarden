@@ -21,6 +21,9 @@ Duplicate or overridden keys are preserved. `All(path)` returns every observed
 value for a path, while `Last(path)` and `Get(path)` return the effective final
 value. Parser diagnostics can be converted to scanner warnings.
 
+Policy files use `.pkgwarden.yml` and are parsed with the foundation parser
+utilities plus policy-specific structure handling.
+
 YAML and TOML parsing is intentionally conservative for foundation milestone
 configuration analysis. It is designed for common package-manager config
 patterns, not full language-spec coverage.

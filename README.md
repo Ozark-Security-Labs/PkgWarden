@@ -10,8 +10,8 @@ configuration and reports evidence-bound hardening recommendations.
 ## Current status
 
 This repository is in the M0 foundation milestone. The CLI can inventory
-package-manager, CI, and dependency-bot files and emit deterministic
-zero-finding output, but package-manager rules are not implemented yet.
+package-manager, CI, and dependency-bot files, execute baseline hardening
+rules, and emit deterministic JSON output.
 
 ## CLI
 
@@ -23,7 +23,9 @@ go run ./cmd/pkgwarden -- version
 go run ./cmd/pkgwarden -- help
 ```
 
-The scan command accepts `--format human|json`.
+The scan command accepts `--format human|json`. It also accepts
+`--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry`
+and `--policy <path>`.
 
 JSON output is the scan contract. The current model is documented in
 [docs/scan-output.md](docs/scan-output.md), with the committed schema at

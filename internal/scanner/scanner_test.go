@@ -30,14 +30,31 @@ func TestScanExistingDirectory(t *testing.T) {
 	if len(report.Inventory.Manifests) != 0 {
 		t.Fatalf("Inventory.Manifests len = %d, want 0", len(report.Inventory.Manifests))
 	}
-	if len(report.Rules) != 0 {
-		t.Fatalf("Rules len = %d, want 0", len(report.Rules))
+	if len(report.Rules) == 0 {
+		t.Fatal("Rules is empty")
+	}
+	if !ruleEnabled(report.Rules, "PW-R001") {
+		t.Fatal("PW-R001 is not enabled by baseline profile")
 	}
 	if len(report.Profiles) == 0 {
 		t.Fatal("Profiles is empty")
 	}
 	if len(report.Policy.Rules.Enabled) != 0 {
 		t.Fatalf("Policy.Rules.Enabled len = %d, want 0", len(report.Policy.Rules.Enabled))
+	}
+}
+
+func TestScanStrictProfileChangesEnabledRules(t *testing.T) {
+	report, err := ScanWithOptions("../../fixtures/empty-repo", Options{Profile: "strict"})
+
+	if err != nil {
+		t.Fatalf("ScanWithOptions returned error: %v", err)
+	}
+	if !ruleEnabled(report.Rules, "PW-R000") {
+		t.Fatal("PW-R000 is not enabled by strict profile")
+	}
+	if !ruleEnabled(report.Rules, "PW-R001") {
+		t.Fatal("PW-R001 is not enabled by strict profile")
 	}
 }
 
@@ -112,6 +129,55 @@ func TestScanWarnsOnUnreadableWalkEntry(t *testing.T) {
 	assertInventoryPathAbsent(t, report.Inventory.Lockfiles, "locked/package-lock.json")
 }
 
+func TestScanReportsMissingLockfileFinding(t *testing.T) {
+	report, err := Scan("../../fixtures/rules-missing-lockfile")
+
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	if len(report.Findings) != 1 {
+		t.Fatalf("Findings len = %d, want 1", len(report.Findings))
+	}
+	finding := report.Findings[0]
+	if finding.RuleID != "PW-R001" {
+		t.Fatalf("RuleID = %q, want PW-R001", finding.RuleID)
+	}
+	if finding.Category == "" || finding.Severity == "" || finding.Recommendation == "" {
+		t.Fatalf("finding missing normalized fields: %#v", finding)
+	}
+	if len(finding.Locations) == 0 || finding.Locations[0].Path != "package.json" {
+		t.Fatalf("finding locations = %#v, want package.json", finding.Locations)
+	}
+}
+
+func TestScanPolicySuppressesFinding(t *testing.T) {
+	report, err := Scan("../../fixtures/rules-policy-suppressed")
+
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	if len(report.Findings) != 0 {
+		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
+	}
+	if len(report.SuppressedFindings) != 1 {
+		t.Fatalf("SuppressedFindings len = %d, want 1", len(report.SuppressedFindings))
+	}
+}
+
+func TestScanInlineSuppressesFinding(t *testing.T) {
+	report, err := Scan("../../fixtures/rules-inline-suppressed")
+
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	if len(report.Findings) != 0 {
+		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
+	}
+	if len(report.SuppressedFindings) != 1 {
+		t.Fatalf("SuppressedFindings len = %d, want 1", len(report.SuppressedFindings))
+	}
+}
+
 func assertInventoryPath(t *testing.T, items []model.InventoryItem, path string, ecosystem string, packageManager string) {
 	t.Helper()
 	for _, item := range items {
@@ -153,4 +219,13 @@ func assertSummary(t *testing.T, items []model.InventoryItem, name string) {
 		}
 	}
 	t.Fatalf("summary %q not found in %#v", name, items)
+}
+
+func ruleEnabled(rules []model.Rule, id string) bool {
+	for _, rule := range rules {
+		if rule.ID == id {
+			return rule.Enabled
+		}
+	}
+	return false
 }

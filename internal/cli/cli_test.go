@@ -21,6 +21,9 @@ func TestScanEmptyRepoHuman(t *testing.T) {
 	if !strings.Contains(stdout.String(), "Findings: 0") {
 		t.Fatalf("stdout = %q, want findings count", stdout.String())
 	}
+	if !strings.Contains(stdout.String(), "Suppressed: 0") {
+		t.Fatalf("stdout = %q, want suppressed count", stdout.String())
+	}
 }
 
 func TestScanIgnoresLeadingSeparator(t *testing.T) {
@@ -59,8 +62,11 @@ func TestScanEmptyRepoJSON(t *testing.T) {
 	if len(report.Findings) != 0 {
 		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
 	}
-	if len(report.Rules) != 0 {
-		t.Fatalf("Rules len = %d, want 0", len(report.Rules))
+	if len(report.Rules) == 0 {
+		t.Fatal("Rules is empty")
+	}
+	if len(report.SuppressedFindings) != 0 {
+		t.Fatalf("SuppressedFindings len = %d, want 0", len(report.SuppressedFindings))
 	}
 	if len(report.Profiles) == 0 {
 		t.Fatal("Profiles is empty")
@@ -95,6 +101,59 @@ func TestScanInvalidFormat(t *testing.T) {
 	}
 	if !strings.Contains(stderr.String(), "unsupported format: sarif") {
 		t.Fatalf("stderr = %q, want unsupported format error", stderr.String())
+	}
+}
+
+func TestScanInvalidProfile(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/empty-repo", "--profile", "invalid"}, &stdout, &stderr)
+
+	if code == 0 {
+		t.Fatal("exit code = 0, want failure")
+	}
+	if !strings.Contains(stderr.String(), "unsupported profile: invalid") {
+		t.Fatalf("stderr = %q, want unsupported profile error", stderr.String())
+	}
+}
+
+func TestScanStrictProfileJSON(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/empty-repo", "--format", "json", "--profile", "strict"}, &stdout, &stderr)
+
+	if code != 0 {
+		t.Fatalf("exit code = %d, stderr = %q", code, stderr.String())
+	}
+	var report model.Report
+	if err := json.Unmarshal(stdout.Bytes(), &report); err != nil {
+		t.Fatalf("stdout is not valid report JSON: %v\n%s", err, stdout.String())
+	}
+	if !cliRuleEnabled(report.Rules, "PW-R000") {
+		t.Fatal("PW-R000 is not enabled by strict profile")
+	}
+}
+
+func TestScanPolicyOverrideJSON(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/rules-policy-suppressed", "--format", "json"}, &stdout, &stderr)
+
+	if code != 0 {
+		t.Fatalf("exit code = %d, stderr = %q", code, stderr.String())
+	}
+	var report model.Report
+	if err := json.Unmarshal(stdout.Bytes(), &report); err != nil {
+		t.Fatalf("stdout is not valid report JSON: %v\n%s", err, stdout.String())
+	}
+	if len(report.Findings) != 0 {
+		t.Fatalf("Findings len = %d, want 0", len(report.Findings))
+	}
+	if len(report.SuppressedFindings) != 1 {
+		t.Fatalf("SuppressedFindings len = %d, want 1", len(report.SuppressedFindings))
 	}
 }
 
@@ -138,4 +197,13 @@ func TestHelp(t *testing.T) {
 	if !strings.Contains(stdout.String(), "pkgwarden scan") {
 		t.Fatalf("stdout = %q, want usage output", stdout.String())
 	}
+}
+
+func cliRuleEnabled(rules []model.Rule, id string) bool {
+	for _, rule := range rules {
+		if rule.ID == id {
+			return rule.Enabled
+		}
+	}
+	return false
 }

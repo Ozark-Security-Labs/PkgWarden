@@ -56,4 +56,7 @@ func TestEmptyReportCollectionsAreNonNil(t *testing.T) {
 	if policy.Rules.Disabled == nil {
 		t.Fatal("Policy.Rules.Disabled is nil")
 	}
+	if policy.Suppressions == nil {
+		t.Fatal("Policy.Suppressions is nil")
+	}
 }

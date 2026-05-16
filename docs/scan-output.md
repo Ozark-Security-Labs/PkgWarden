@@ -15,6 +15,8 @@ The schema is committed at [scan-output.schema.json](scan-output.schema.json).
 - `warnings` records non-fatal scan problems, such as unreadable paths found
   while walking the target repository.
 - `findings` records evidence-bound hardening recommendations.
+- `suppressed_findings` records findings hidden by policy or inline
+  suppressions.
 - `rules` records rule metadata and profile applicability.
 - `profiles` records supported hardening profiles.
 - `policy` records selected profiles and explicit rule overrides.
@@ -73,5 +75,5 @@ assumptions, or vendor-specific behavior unless a future integration explicitly
 adds that behavior.
 
 The `policy.rules.enabled` and `policy.rules.disabled` arrays contain explicit
-rule id overrides. Policy loading is not implemented in the foundation model;
-the fields define the output contract for future policy-aware scans.
+rule id overrides. The `policy.suppressions` array records policy-file
+suppressions with `rule_id`, `path`, and `reason`.

@@ -10,6 +10,7 @@
     "inventory",
     "warnings",
     "findings",
+    "suppressed_findings",
     "rules",
     "profiles",
     "policy"
@@ -31,6 +32,12 @@
       }
     },
     "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "suppressed_findings": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/finding"
@@ -383,7 +390,8 @@
       "additionalProperties": false,
       "required": [
         "profiles",
-        "rules"
+        "rules",
+        "suppressions"
       ],
       "properties": {
         "profiles": {
@@ -413,6 +421,32 @@
               }
             }
           }
+        },
+        "suppressions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/suppression"
+          }
+        }
+      }
+    },
+    "suppression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "path",
+        "reason"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
         }
       }
     }

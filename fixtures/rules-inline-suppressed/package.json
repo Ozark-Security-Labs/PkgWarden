@@ -1,0 +1,4 @@
+{
+  "_comment": "pkgwarden:ignore PW-R001 fixture suppression",
+  "name": "inline-suppressed"
+}

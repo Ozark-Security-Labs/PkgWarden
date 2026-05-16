@@ -12,7 +12,7 @@ import (
 var ErrWriteFailed = errors.New("write failed")
 
 func WriteHuman(w io.Writer, report model.Report) error {
-	if _, err := fmt.Fprintf(w, "PkgWarden scan complete\nTarget: %s\nFindings: %d\n", report.Target, len(report.Findings)); err != nil {
+	if _, err := fmt.Fprintf(w, "PkgWarden scan complete\nTarget: %s\nFindings: %d\nSuppressed: %d\n", report.Target, len(report.Findings), len(report.SuppressedFindings)); err != nil {
 		return fmt.Errorf("%w: %v", ErrWriteFailed, err)
 	}
 	if len(report.Warnings) == 0 {

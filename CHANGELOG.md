@@ -16,5 +16,7 @@ This project follows a practical changelog style organized by release.
   dependency-bot configuration.
 - Add line-aware parser utilities for JSON, YAML, TOML, INI, XML,
   shell-style config, and requirements files.
+- Add rule engine execution, baseline profile selection, policy suppression,
+  inline suppression, and a sample missing-lockfile finding rule.
 - Add CI and local development commands for formatting, vetting, testing, and
   building.

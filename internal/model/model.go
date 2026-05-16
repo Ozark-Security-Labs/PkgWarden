@@ -29,14 +29,15 @@ const (
 )
 
 type Report struct {
-	SchemaVersion string    `json:"schema_version"`
-	Target        string    `json:"target"`
-	Inventory     Inventory `json:"inventory"`
-	Warnings      []Warning `json:"warnings"`
-	Findings      []Finding `json:"findings"`
-	Rules         []Rule    `json:"rules"`
-	Profiles      []Profile `json:"profiles"`
-	Policy        Policy    `json:"policy"`
+	SchemaVersion      string    `json:"schema_version"`
+	Target             string    `json:"target"`
+	Inventory          Inventory `json:"inventory"`
+	Warnings           []Warning `json:"warnings"`
+	Findings           []Finding `json:"findings"`
+	SuppressedFindings []Finding `json:"suppressed_findings"`
+	Rules              []Rule    `json:"rules"`
+	Profiles           []Profile `json:"profiles"`
+	Policy             Policy    `json:"policy"`
 }
 
 type Inventory struct {
@@ -118,13 +119,20 @@ type Profile struct {
 }
 
 type Policy struct {
-	Profiles []ProfileID `json:"profiles"`
-	Rules    RulePolicy  `json:"rules"`
+	Profiles     []ProfileID   `json:"profiles"`
+	Rules        RulePolicy    `json:"rules"`
+	Suppressions []Suppression `json:"suppressions"`
 }
 
 type RulePolicy struct {
 	Enabled  []string `json:"enabled"`
 	Disabled []string `json:"disabled"`
+}
+
+type Suppression struct {
+	RuleID string `json:"rule_id"`
+	Path   string `json:"path"`
+	Reason string `json:"reason"`
 }
 
 func EmptyInventory() Inventory {
@@ -156,5 +164,6 @@ func EmptyPolicy() Policy {
 			Enabled:  []string{},
 			Disabled: []string{},
 		},
+		Suppressions: []Suppression{},
 	}
 }

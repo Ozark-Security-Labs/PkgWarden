@@ -6,6 +6,8 @@ import (
 	"io"
 	"strings"
 
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/policy"
 	"github.com/Ozark-Security-Labs/PkgWarden/internal/reporting"
 	"github.com/Ozark-Security-Labs/PkgWarden/internal/scanner"
 )
@@ -40,6 +42,8 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 
 func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 	format := "human"
+	var profile model.ProfileID
+	var policyPath string
 	var target string
 
 	for i := 0; i < len(args); i++ {
@@ -55,6 +59,39 @@ func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 			i++
 		case strings.HasPrefix(arg, "--format="):
 			format = strings.TrimPrefix(arg, "--format=")
+		case arg == "--profile":
+			if i+1 >= len(args) {
+				fmt.Fprintln(stderr, "--profile requires a value")
+				writeScanUsage(stderr)
+				return 1
+			}
+			selected, ok := policy.ParseProfile(args[i+1])
+			if !ok {
+				fmt.Fprintf(stderr, "unsupported profile: %s\n", args[i+1])
+				writeScanUsage(stderr)
+				return 1
+			}
+			profile = selected
+			i++
+		case strings.HasPrefix(arg, "--profile="):
+			value := strings.TrimPrefix(arg, "--profile=")
+			selected, ok := policy.ParseProfile(value)
+			if !ok {
+				fmt.Fprintf(stderr, "unsupported profile: %s\n", value)
+				writeScanUsage(stderr)
+				return 1
+			}
+			profile = selected
+		case arg == "--policy":
+			if i+1 >= len(args) {
+				fmt.Fprintln(stderr, "--policy requires a value")
+				writeScanUsage(stderr)
+				return 1
+			}
+			policyPath = args[i+1]
+			i++
+		case strings.HasPrefix(arg, "--policy="):
+			policyPath = strings.TrimPrefix(arg, "--policy=")
 		case strings.HasPrefix(arg, "-"):
 			fmt.Fprintf(stderr, "unknown scan option: %s\n", arg)
 			writeScanUsage(stderr)
@@ -75,7 +112,7 @@ func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 
-	report, err := scanner.Scan(target)
+	report, err := scanner.ScanWithOptions(target, scanner.Options{Profile: profile, PolicyPath: policyPath})
 	if err != nil {
 		fmt.Fprintf(stderr, "scan failed: %v\n", err)
 		return 1
@@ -105,7 +142,7 @@ func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 
 func writeUsage(w io.Writer) {
 	fmt.Fprint(w, `Usage:
-  pkgwarden scan [--format human|json] <path>
+  pkgwarden scan [--format human|json] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
   pkgwarden version
   pkgwarden help
 `)
@@ -113,6 +150,6 @@ func writeUsage(w io.Writer) {
 
 func writeScanUsage(w io.Writer) {
 	fmt.Fprint(w, `Usage:
-  pkgwarden scan [--format human|json] <path>
+  pkgwarden scan [--format human|json] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
 `)
 }
