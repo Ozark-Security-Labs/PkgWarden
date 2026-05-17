@@ -55,8 +55,11 @@ fields when the parser can identify exact ranges.
 Findings that cannot be mechanically traced should remain evidence-bound in the
 recommendation text and should not overstate confidence.
 
-Evidence descriptions are redacted before report output is written. Reporters
-must not print raw package-manager token values in human or JSON output.
+Evidence descriptions are redacted through the shared redaction utility before
+report output is written. Reporters must not print raw package-manager token or
+credential values in human, JSON, or future output formats. Redaction preserves
+surrounding context, including registry hosts and environment variable
+placeholders such as `${NPM_TOKEN}`.
 
 Warnings include the target-relative `path` and a human-readable `message`.
 Warnings do not fail the scan and should be used for missing or unreadable files

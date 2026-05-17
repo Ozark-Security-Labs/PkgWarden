@@ -5,19 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"regexp"
 	"sort"
 	"strings"
 
 	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/redaction"
 )
 
 var ErrWriteFailed = errors.New("write failed")
-
-var (
-	secretAssignmentPattern = regexp.MustCompile(`(?i)([A-Za-z0-9_.-]*(?:token|secret|password|api[_-]?key|auth)[A-Za-z0-9_.-]*\s*[:=]\s*)[^\s,;]+`)
-	npmTokenPattern         = regexp.MustCompile(`\bnpm_[A-Za-z0-9][A-Za-z0-9_-]*`)
-)
 
 func WriteHuman(w io.Writer, report model.Report) error {
 	report = redactedReport(report)
@@ -166,8 +161,7 @@ func redactedFindings(findings []model.Finding) []model.Finding {
 }
 
 func redactEvidence(description string) string {
-	description = secretAssignmentPattern.ReplaceAllString(description, `${1}[REDACTED]`)
-	return npmTokenPattern.ReplaceAllString(description, "[REDACTED]")
+	return redaction.EvidenceText(description)
 }
 
 func ecosystemForFinding(inventory model.Inventory, finding model.Finding) string {

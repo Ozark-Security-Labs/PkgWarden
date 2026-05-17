@@ -10,6 +10,9 @@ This project follows a practical changelog style organized by release.
   `pkgwarden help`.
 - Add human and JSON scan output with grouped finding summaries, evidence
   redaction, and `--fail-on` severity thresholds.
+- Add a shared secret-redaction utility for package-manager evidence, including
+  URL credentials, bearer-like values, npm auth tokens, and credential
+  assignments while preserving environment placeholders.
 - Define the scan-output data model for inventory, evidence, findings, rules,
   profiles, policy overrides, and the committed JSON Schema.
 - Add repository inventory walking for package-manager files, CI workflows, and

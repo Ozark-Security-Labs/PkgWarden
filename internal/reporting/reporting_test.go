@@ -186,6 +186,46 @@ func TestWriteJSONRedactsEvidence(t *testing.T) {
 	}
 }
 
+func TestReportFormatsUseSharedRedaction(t *testing.T) {
+	report := emptyReport("fixtures/redacted")
+	report.Inventory.Manifests = []model.InventoryItem{
+		{Name: "package.json", Ecosystem: "node", Locations: []model.Location{{Path: "package.json"}}},
+	}
+	report.Findings = []model.Finding{
+		{
+			RuleID:         "PW-R010",
+			Title:          "Credentials in registry URL",
+			Severity:       model.SeverityHigh,
+			Category:       "secrets",
+			Locations:      []model.Location{{Path: "package.json"}},
+			Evidence:       []model.Evidence{{Description: "registry https://user:pass123@registry.example and Authorization: Bearer abc.def.ghi"}},
+			Recommendation: "Remove credentials from package-manager configuration.",
+		},
+	}
+
+	var human bytes.Buffer
+	if err := WriteHuman(&human, report); err != nil {
+		t.Fatalf("WriteHuman returned error: %v", err)
+	}
+	var jsonOut bytes.Buffer
+	if err := WriteJSON(&jsonOut, report); err != nil {
+		t.Fatalf("WriteJSON returned error: %v", err)
+	}
+
+	for label, output := range map[string]string{"human": human.String(), "json": jsonOut.String()} {
+		for _, raw := range []string{"user", "pass123", "abc.def.ghi"} {
+			if strings.Contains(output, raw) {
+				t.Fatalf("%s output contains raw secret %q: %s", label, raw, output)
+			}
+		}
+		for _, want := range []string{"https://[REDACTED]@registry.example", "Bearer [REDACTED]"} {
+			if !strings.Contains(output, want) {
+				t.Fatalf("%s output = %q, want redacted context %q", label, output, want)
+			}
+		}
+	}
+}
+
 func emptyReport(target string) model.Report {
 	return model.Report{
 		SchemaVersion:      "0.1.0",

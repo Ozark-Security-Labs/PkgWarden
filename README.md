@@ -33,8 +33,8 @@ JSON output is the scan contract. The current model is documented in
 [docs/scan-output.md](docs/scan-output.md), with the committed schema at
 [docs/scan-output.schema.json](docs/scan-output.schema.json).
 Human output is a terminal summary grouped by severity, ecosystem, and
-category. Evidence descriptions are redacted before any report format is
-written.
+category. Evidence descriptions are redacted through shared helpers before any
+report format is written.
 Policy file behavior is documented in [docs/policy.md](docs/policy.md), with an
 example at [examples/.pkgwarden.yml](examples/.pkgwarden.yml).
 Parser utility behavior is documented in [docs/parsers.md](docs/parsers.md).
