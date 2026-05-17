@@ -31,6 +31,8 @@ JSON output is the scan contract. The current model is documented in
 [docs/scan-output.md](docs/scan-output.md), with the committed schema at
 [docs/scan-output.schema.json](docs/scan-output.schema.json).
 Parser utility behavior is documented in [docs/parsers.md](docs/parsers.md).
+Fixture and golden test guidance is documented in
+[docs/fixtures.md](docs/fixtures.md).
 
 Repository inventory walks skip common generated, vendored, cache, and
 environment directories such as `.git`, `node_modules`, `vendor`, `.venv`,

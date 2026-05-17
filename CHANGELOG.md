@@ -18,5 +18,6 @@ This project follows a practical changelog style organized by release.
   shell-style config, and requirements files.
 - Add rule engine execution, baseline profile selection, policy suppression,
   inline suppression, and a sample missing-lockfile finding rule.
+- Add fixture repository golden-output tests and contributor fixture guidance.
 - Add CI and local development commands for formatting, vetting, testing, and
   building.

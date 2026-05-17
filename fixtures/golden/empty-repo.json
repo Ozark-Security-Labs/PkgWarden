@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1.0",
+  "target": "fixtures/empty-repo",
+  "inventory": {
+    "ecosystems": [],
+    "package_managers": [],
+    "manifests": [],
+    "lockfiles": [],
+    "ci_workflows": [],
+    "dependency_bots": [],
+    "package_manager_config_files": []
+  },
+  "warnings": [],
+  "findings": [],
+  "suppressed_findings": [],
+  "rules": [
+    {
+      "id": "PW-R000",
+      "ecosystem": "repository",
+      "category": "foundation",
+      "severity": "info",
+      "profiles": [
+        "strict"
+      ],
+      "remediation": "No remediation; this rule verifies rule engine execution.",
+      "references": [],
+      "enabled": false
+    },
+    {
+      "id": "PW-R001",
+      "ecosystem": "multi",
+      "category": "lockfile",
+      "severity": "medium",
+      "profiles": [
+        "baseline",
+        "strict"
+      ],
+      "remediation": "Commit the package-manager lockfile for each manifest where the ecosystem supports lockfiles.",
+      "references": [],
+      "enabled": true
+    }
+  ],
+  "profiles": [
+    {
+      "id": "baseline",
+      "name": "Baseline",
+      "description": "Default hardening checks for common repository package-manager configuration."
+    },
+    {
+      "id": "strict",
+      "name": "Strict",
+      "description": "Higher-signal hardening checks for repositories that want a more restrictive posture."
+    },
+    {
+      "id": "socket-firewall",
+      "name": "Socket Firewall",
+      "description": "Checks relevant to repositories using Socket Firewall controls."
+    },
+    {
+      "id": "veracode-package-firewall",
+      "name": "Veracode Package Firewall",
+      "description": "Checks relevant to repositories using Veracode Package Firewall controls."
+    },
+    {
+      "id": "private-registry",
+      "name": "Private Registry",
+      "description": "Checks relevant to repositories that route dependencies through private registries."
+    }
+  ],
+  "policy": {
+    "profiles": [
+      "baseline"
+    ],
+    "rules": {
+      "enabled": [],
+      "disabled": []
+    },
+    "suppressions": []
+  }
+}
