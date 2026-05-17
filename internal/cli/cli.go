@@ -42,6 +42,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 
 func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 	format := "human"
+	var failOn model.Severity
 	var profile model.ProfileID
 	var policyPath string
 	var target string
@@ -59,6 +60,29 @@ func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 			i++
 		case strings.HasPrefix(arg, "--format="):
 			format = strings.TrimPrefix(arg, "--format=")
+		case arg == "--fail-on":
+			if i+1 >= len(args) {
+				fmt.Fprintln(stderr, "--fail-on requires a value")
+				writeScanUsage(stderr)
+				return 1
+			}
+			selected, ok := parseSeverity(args[i+1])
+			if !ok {
+				fmt.Fprintf(stderr, "unsupported fail-on severity: %s\n", args[i+1])
+				writeScanUsage(stderr)
+				return 1
+			}
+			failOn = selected
+			i++
+		case strings.HasPrefix(arg, "--fail-on="):
+			value := strings.TrimPrefix(arg, "--fail-on=")
+			selected, ok := parseSeverity(value)
+			if !ok {
+				fmt.Fprintf(stderr, "unsupported fail-on severity: %s\n", value)
+				writeScanUsage(stderr)
+				return 1
+			}
+			failOn = selected
 		case arg == "--profile":
 			if i+1 >= len(args) {
 				fmt.Fprintln(stderr, "--profile requires a value")
@@ -137,12 +161,15 @@ func runScan(args []string, stdout io.Writer, stderr io.Writer) int {
 		return 1
 	}
 
+	if failOn != "" && shouldFailOnSeverity(report, failOn) {
+		return 1
+	}
 	return 0
 }
 
 func writeUsage(w io.Writer) {
 	fmt.Fprint(w, `Usage:
-  pkgwarden scan [--format human|json] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
+  pkgwarden scan [--format human|json] [--fail-on info|low|medium|high|critical] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
   pkgwarden version
   pkgwarden help
 `)
@@ -150,6 +177,43 @@ func writeUsage(w io.Writer) {
 
 func writeScanUsage(w io.Writer) {
 	fmt.Fprint(w, `Usage:
-  pkgwarden scan [--format human|json] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
+  pkgwarden scan [--format human|json] [--fail-on info|low|medium|high|critical] [--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry] [--policy path] <path>
 `)
+}
+
+func parseSeverity(value string) (model.Severity, bool) {
+	severity := model.Severity(value)
+	switch severity {
+	case model.SeverityInfo, model.SeverityLow, model.SeverityMedium, model.SeverityHigh, model.SeverityCritical:
+		return severity, true
+	default:
+		return "", false
+	}
+}
+
+func shouldFailOnSeverity(report model.Report, threshold model.Severity) bool {
+	thresholdRank := severityRank(threshold)
+	for _, finding := range report.Findings {
+		if severityRank(finding.Severity) <= thresholdRank {
+			return true
+		}
+	}
+	return false
+}
+
+func severityRank(severity model.Severity) int {
+	switch severity {
+	case model.SeverityCritical:
+		return 0
+	case model.SeverityHigh:
+		return 1
+	case model.SeverityMedium:
+		return 2
+	case model.SeverityLow:
+		return 3
+	case model.SeverityInfo:
+		return 4
+	default:
+		return 5
+	}
 }

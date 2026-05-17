@@ -19,17 +19,22 @@ rules, and emit deterministic JSON output.
 go run ./cmd/pkgwarden -- scan fixtures/empty-repo
 go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format human
 go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format json
+go run ./cmd/pkgwarden -- scan fixtures/rules-missing-lockfile --fail-on medium
 go run ./cmd/pkgwarden -- version
 go run ./cmd/pkgwarden -- help
 ```
 
-The scan command accepts `--format human|json`. It also accepts
+The scan command accepts `--format human|json` and
+`--fail-on info|low|medium|high|critical`. It also accepts
 `--profile baseline|strict|socket-firewall|veracode-package-firewall|private-registry`
 and `--policy <path>`.
 
 JSON output is the scan contract. The current model is documented in
 [docs/scan-output.md](docs/scan-output.md), with the committed schema at
 [docs/scan-output.schema.json](docs/scan-output.schema.json).
+Human output is a terminal summary grouped by severity, ecosystem, and
+category. Evidence descriptions are redacted before any report format is
+written.
 Parser utility behavior is documented in [docs/parsers.md](docs/parsers.md).
 Fixture and golden test guidance is documented in
 [docs/fixtures.md](docs/fixtures.md).

@@ -1,8 +1,8 @@
 # Scan Output Contract
 
 PkgWarden scan output is the stable JSON contract for scanner, rule, and
-reporting behavior. Human output should derive from this model and remain a
-summary view.
+reporting behavior. Human output derives from this model and remains a summary
+view grouped by severity, ecosystem, and category.
 
 The schema is committed at [scan-output.schema.json](scan-output.schema.json).
 
@@ -54,9 +54,19 @@ fields when the parser can identify exact ranges.
 Findings that cannot be mechanically traced should remain evidence-bound in the
 recommendation text and should not overstate confidence.
 
+Evidence descriptions are redacted before report output is written. Reporters
+must not print raw package-manager token values in human or JSON output.
+
 Warnings include the target-relative `path` and a human-readable `message`.
 Warnings do not fail the scan and should be used for missing or unreadable files
 encountered after repository walking has started.
+
+## Exit thresholds
+
+By default, a successful scan exits `0` even when findings are present. The CLI
+supports `--fail-on info|low|medium|high|critical` to return a non-zero exit
+code when any active finding meets or exceeds the selected severity. Suppressed
+findings and warnings do not affect this threshold.
 
 ## Profiles and policy
 

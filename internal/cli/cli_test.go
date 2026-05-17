@@ -104,6 +104,70 @@ func TestScanInvalidFormat(t *testing.T) {
 	}
 }
 
+func TestScanFailOnMediumFailsForMediumFinding(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/rules-missing-lockfile", "--fail-on", "medium"}, &stdout, &stderr)
+
+	if code != 1 {
+		t.Fatalf("exit code = %d, want failure", code)
+	}
+	if !strings.Contains(stdout.String(), "Findings: 1") {
+		t.Fatalf("stdout = %q, want report output before failure", stdout.String())
+	}
+	if stderr.String() != "" {
+		t.Fatalf("stderr = %q, want empty stderr", stderr.String())
+	}
+}
+
+func TestScanFailOnHighAllowsMediumFinding(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/rules-missing-lockfile", "--fail-on=high"}, &stdout, &stderr)
+
+	if code != 0 {
+		t.Fatalf("exit code = %d, stderr = %q", code, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "Findings: 1") {
+		t.Fatalf("stdout = %q, want report output", stdout.String())
+	}
+}
+
+func TestScanInvalidFailOn(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	code := Run([]string{"scan", "../../fixtures/empty-repo", "--fail-on", "urgent"}, &stdout, &stderr)
+
+	if code == 0 {
+		t.Fatal("exit code = 0, want failure")
+	}
+	if !strings.Contains(stderr.String(), "unsupported fail-on severity: urgent") {
+		t.Fatalf("stderr = %q, want unsupported fail-on error", stderr.String())
+	}
+}
+
+func TestShouldFailOnSeverity(t *testing.T) {
+	report := model.Report{
+		Findings: []model.Finding{
+			{Severity: model.SeverityLow},
+			{Severity: model.SeverityHigh},
+		},
+		SuppressedFindings: []model.Finding{
+			{Severity: model.SeverityCritical},
+		},
+	}
+
+	if !shouldFailOnSeverity(report, model.SeverityHigh) {
+		t.Fatal("shouldFailOnSeverity returned false, want true for active high finding")
+	}
+	if shouldFailOnSeverity(report, model.SeverityCritical) {
+		t.Fatal("shouldFailOnSeverity returned true, want false when only suppressed finding is critical")
+	}
+}
+
 func TestScanInvalidProfile(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer

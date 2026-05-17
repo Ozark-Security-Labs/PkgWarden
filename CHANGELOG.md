@@ -8,8 +8,8 @@ This project follows a practical changelog style organized by release.
 
 - Add the initial Go CLI scaffold for `pkgwarden scan`, `pkgwarden version`, and
   `pkgwarden help`.
-- Add minimal human and JSON scan output with zero findings for the foundation
-  milestone.
+- Add human and JSON scan output with grouped finding summaries, evidence
+  redaction, and `--fail-on` severity thresholds.
 - Define the scan-output data model for inventory, evidence, findings, rules,
   profiles, policy overrides, and the committed JSON Schema.
 - Add repository inventory walking for package-manager files, CI workflows, and
