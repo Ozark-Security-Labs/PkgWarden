@@ -226,6 +226,38 @@ func TestReportFormatsUseSharedRedaction(t *testing.T) {
 	}
 }
 
+func TestWriteJSONRedactsPolicyEndpoints(t *testing.T) {
+	var out bytes.Buffer
+	report := emptyReport("fixtures/redacted-policy")
+	report.Policy.Registries = &model.RegistryPolicy{
+		Approved: []string{"https://registry-user:registry-token@registry.example/npm"},
+	}
+	report.Policy.PackageFirewall = &model.PackageFirewallPolicy{
+		Endpoints: []string{"https://firewall-user:firewall-token@firewall.example/api"},
+	}
+
+	if err := WriteJSON(&out, report); err != nil {
+		t.Fatalf("WriteJSON returned error: %v", err)
+	}
+
+	for _, raw := range []string{"registry-user", "registry-token", "firewall-user", "firewall-token"} {
+		if strings.Contains(out.String(), raw) {
+			t.Fatalf("output contains raw policy credential %q: %s", raw, out.String())
+		}
+	}
+	for _, want := range []string{"https://[REDACTED]@registry.example/npm", "https://[REDACTED]@firewall.example/api"} {
+		if !strings.Contains(out.String(), want) {
+			t.Fatalf("output = %q, want redacted policy endpoint %q", out.String(), want)
+		}
+	}
+	if report.Policy.Registries.Approved[0] != "https://registry-user:registry-token@registry.example/npm" {
+		t.Fatalf("original registry endpoint mutated: %#v", report.Policy.Registries.Approved)
+	}
+	if report.Policy.PackageFirewall.Endpoints[0] != "https://firewall-user:firewall-token@firewall.example/api" {
+		t.Fatalf("original firewall endpoint mutated: %#v", report.Policy.PackageFirewall.Endpoints)
+	}
+}
+
 func emptyReport(target string) model.Report {
 	return model.Report{
 		SchemaVersion:      "0.1.0",

@@ -86,5 +86,5 @@ func lineHasSuppression(lines []string, oneBasedLine int, ruleID string) bool {
 		return false
 	}
 	fields := strings.Fields(line[index:])
-	return len(fields) >= 2 && fields[0] == inlineSuppressionPrefix && fields[1] == ruleID
+	return len(fields) >= 3 && fields[0] == inlineSuppressionPrefix && fields[1] == ruleID
 }

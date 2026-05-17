@@ -139,7 +139,33 @@ func writeEcosystemGroups(w io.Writer, report model.Report, findings []model.Fin
 func redactedReport(report model.Report) model.Report {
 	report.Findings = redactedFindings(report.Findings)
 	report.SuppressedFindings = redactedFindings(report.SuppressedFindings)
+	report.Policy = redactedPolicy(report.Policy)
 	return report
+}
+
+func redactedPolicy(policy model.Policy) model.Policy {
+	if policy.Registries != nil {
+		registries := *policy.Registries
+		registries.Approved = redactedStrings(policy.Registries.Approved)
+		policy.Registries = &registries
+	}
+	if policy.PackageFirewall != nil {
+		firewall := *policy.PackageFirewall
+		firewall.Endpoints = redactedStrings(policy.PackageFirewall.Endpoints)
+		policy.PackageFirewall = &firewall
+	}
+	return policy
+}
+
+func redactedStrings(values []string) []string {
+	if values == nil {
+		return nil
+	}
+	redacted := make([]string, len(values))
+	for i, value := range values {
+		redacted[i] = redaction.EvidenceText(value)
+	}
+	return redacted
 }
 
 func redactedFindings(findings []model.Finding) []model.Finding {
