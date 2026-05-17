@@ -19,7 +19,8 @@ The schema is committed at [scan-output.schema.json](scan-output.schema.json).
   suppressions.
 - `rules` records rule metadata and profile applicability.
 - `profiles` records supported hardening profiles.
-- `policy` records selected profiles and explicit rule overrides.
+- `policy` records selected profiles, registry and package-firewall policy,
+  explicit rule overrides, severity overrides, and suppressions.
 
 ## Severity
 
@@ -84,6 +85,17 @@ profile identifiers. They do not imply API calls, live integration, registry URL
 assumptions, or vendor-specific behavior unless a future integration explicitly
 adds that behavior.
 
+`.pkgwarden.yml` is loaded from the scanned repository root by default. Policy
+files can select profiles, record approved registries, record package-firewall
+endpoints and default cooldown days, explicitly enable or disable rule IDs,
+override rule severities, and suppress findings.
+
 The `policy.rules.enabled` and `policy.rules.disabled` arrays contain explicit
-rule id overrides. The `policy.suppressions` array records policy-file
-suppressions with `rule_id`, `path`, and `reason`.
+rule id overrides. The `policy.rules.severity` object maps rule IDs to severity
+overrides. Severity overrides affect both rule metadata and emitted findings.
+The `policy.suppressions` array records policy-file suppressions with `rule_id`,
+`path`, and a required `reason`.
+
+Policy validation problems are reported as scan warnings. With `strict: true`,
+validation warnings are prefixed as policy schema errors but remain non-fatal.
+See [policy.md](policy.md) for the supported `.pkgwarden.yml` shape.

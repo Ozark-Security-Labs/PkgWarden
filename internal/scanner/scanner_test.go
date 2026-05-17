@@ -164,6 +164,30 @@ func TestScanPolicySuppressesFinding(t *testing.T) {
 	}
 }
 
+func TestScanPolicyOverridesRuleSeverity(t *testing.T) {
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "package.json"), []byte("{}\n"), 0o644); err != nil {
+		t.Fatalf("write package.json: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, ".pkgwarden.yml"), []byte("rules:\n  severity:\n    PW-R001: high\n"), 0o644); err != nil {
+		t.Fatalf("write policy: %v", err)
+	}
+
+	report, err := Scan(root)
+	if err != nil {
+		t.Fatalf("Scan returned error: %v", err)
+	}
+	if len(report.Findings) != 1 {
+		t.Fatalf("Findings len = %d, want 1", len(report.Findings))
+	}
+	if report.Findings[0].Severity != model.SeverityHigh {
+		t.Fatalf("finding severity = %q, want high", report.Findings[0].Severity)
+	}
+	if got := ruleEnabledSeverity(report.Rules, "PW-R001"); got != model.SeverityHigh {
+		t.Fatalf("PW-R001 rule severity = %q, want high", got)
+	}
+}
+
 func TestScanInlineSuppressesFinding(t *testing.T) {
 	report, err := Scan("../../fixtures/rules-inline-suppressed")
 
@@ -228,4 +252,13 @@ func ruleEnabled(rules []model.Rule, id string) bool {
 		}
 	}
 	return false
+}
+
+func ruleEnabledSeverity(rules []model.Rule, id string) model.Severity {
+	for _, rule := range rules {
+		if rule.ID == id {
+			return rule.Severity
+		}
+	}
+	return ""
 }

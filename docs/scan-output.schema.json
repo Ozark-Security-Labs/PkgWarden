@@ -394,11 +394,20 @@
         "suppressions"
       ],
       "properties": {
+        "strict": {
+          "type": "boolean"
+        },
         "profiles": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/profile_id"
           }
+        },
+        "registries": {
+          "$ref": "#/$defs/registry_policy"
+        },
+        "package_firewall": {
+          "$ref": "#/$defs/package_firewall_policy"
         },
         "rules": {
           "type": "object",
@@ -419,6 +428,12 @@
               "items": {
                 "type": "string"
               }
+            },
+            "severity": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/severity"
+              }
             }
           }
         },
@@ -427,6 +442,42 @@
           "items": {
             "$ref": "#/$defs/suppression"
           }
+        }
+      }
+    },
+    "registry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved"
+      ],
+      "properties": {
+        "approved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "package_firewall_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoints"
+      ],
+      "properties": {
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "default_cooldown_days": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },

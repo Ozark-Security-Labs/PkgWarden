@@ -35,6 +35,8 @@ JSON output is the scan contract. The current model is documented in
 Human output is a terminal summary grouped by severity, ecosystem, and
 category. Evidence descriptions are redacted before any report format is
 written.
+Policy file behavior is documented in [docs/policy.md](docs/policy.md), with an
+example at [examples/.pkgwarden.yml](examples/.pkgwarden.yml).
 Parser utility behavior is documented in [docs/parsers.md](docs/parsers.md).
 Fixture and golden test guidance is documented in
 [docs/fixtures.md](docs/fixtures.md).

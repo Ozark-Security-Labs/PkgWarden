@@ -30,12 +30,13 @@ func Execute(ctx Context, profile model.ProfileID, policy model.Policy) Result {
 	findings := []model.Finding{}
 	for _, rule := range registered {
 		metadata := rule.Metadata()
+		metadata.Severity = overrideSeverity(metadata.ID, metadata.Severity, policy)
 		metadata.Enabled = enabled[metadata.ID]
 		activeRules = append(activeRules, metadata)
 		if !metadata.Enabled {
 			continue
 		}
-		findings = append(findings, rule.Evaluate(ctx)...)
+		findings = append(findings, overrideFindingSeverities(rule.Evaluate(ctx), policy)...)
 	}
 
 	findings = dedupeFindings(findings)
@@ -45,6 +46,23 @@ func Execute(ctx Context, profile model.ProfileID, policy model.Policy) Result {
 		SuppressedFindings: suppressed,
 		Rules:              activeRules,
 	}
+}
+
+func overrideFindingSeverities(findings []model.Finding, policy model.Policy) []model.Finding {
+	if len(policy.Rules.Severity) == 0 {
+		return findings
+	}
+	for i := range findings {
+		findings[i].Severity = overrideSeverity(findings[i].RuleID, findings[i].Severity, policy)
+	}
+	return findings
+}
+
+func overrideSeverity(ruleID string, fallback model.Severity, policy model.Policy) model.Severity {
+	if severity, ok := policy.Rules.Severity[ruleID]; ok {
+		return severity
+	}
+	return fallback
 }
 
 func enabledRuleIDs(registered []Rule, profile model.ProfileID, policy model.Policy) map[string]bool {

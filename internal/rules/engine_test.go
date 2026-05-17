@@ -47,6 +47,31 @@ func TestExecuteAppliesPolicyOverrides(t *testing.T) {
 	}
 }
 
+func TestExecuteAppliesSeverityOverrides(t *testing.T) {
+	policy := model.EmptyPolicy()
+	policy.Rules.Severity["PW-R001"] = model.SeverityHigh
+	inventory := model.EmptyInventory()
+	inventory.Manifests = []model.InventoryItem{
+		{
+			Name:           "package.json",
+			PackageManager: "npm",
+			Locations:      []model.Location{{Path: "package.json"}},
+		},
+	}
+
+	result := Execute(Context{Inventory: inventory}, model.ProfileBaseline, policy)
+
+	if got := ruleSeverity(result.Rules, "PW-R001"); got != model.SeverityHigh {
+		t.Fatalf("PW-R001 rule severity = %q, want high", got)
+	}
+	if len(result.Findings) != 1 {
+		t.Fatalf("Findings len = %d, want 1", len(result.Findings))
+	}
+	if result.Findings[0].Severity != model.SeverityHigh {
+		t.Fatalf("finding severity = %q, want high", result.Findings[0].Severity)
+	}
+}
+
 func TestExecuteDeduplicatesFindings(t *testing.T) {
 	finding := model.Finding{
 		RuleID:    "PW-R001",
@@ -87,4 +112,13 @@ func ruleEnabled(rules []model.Rule, id string) bool {
 		}
 	}
 	return false
+}
+
+func ruleSeverity(rules []model.Rule, id string) model.Severity {
+	for _, rule := range rules {
+		if rule.ID == id {
+			return rule.Severity
+		}
+	}
+	return ""
 }

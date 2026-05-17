@@ -119,14 +119,27 @@ type Profile struct {
 }
 
 type Policy struct {
-	Profiles     []ProfileID   `json:"profiles"`
-	Rules        RulePolicy    `json:"rules"`
-	Suppressions []Suppression `json:"suppressions"`
+	Strict          bool                   `json:"strict,omitempty"`
+	Profiles        []ProfileID            `json:"profiles"`
+	Registries      *RegistryPolicy        `json:"registries,omitempty"`
+	PackageFirewall *PackageFirewallPolicy `json:"package_firewall,omitempty"`
+	Rules           RulePolicy             `json:"rules"`
+	Suppressions    []Suppression          `json:"suppressions"`
+}
+
+type RegistryPolicy struct {
+	Approved []string `json:"approved"`
+}
+
+type PackageFirewallPolicy struct {
+	Endpoints           []string `json:"endpoints"`
+	DefaultCooldownDays int      `json:"default_cooldown_days,omitempty"`
 }
 
 type RulePolicy struct {
-	Enabled  []string `json:"enabled"`
-	Disabled []string `json:"disabled"`
+	Enabled  []string            `json:"enabled"`
+	Disabled []string            `json:"disabled"`
+	Severity map[string]Severity `json:"severity,omitempty"`
 }
 
 type Suppression struct {
@@ -163,6 +176,7 @@ func EmptyPolicy() Policy {
 		Rules: RulePolicy{
 			Enabled:  []string{},
 			Disabled: []string{},
+			Severity: map[string]Severity{},
 		},
 		Suppressions: []Suppression{},
 	}

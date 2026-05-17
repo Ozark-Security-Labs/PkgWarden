@@ -27,6 +27,7 @@ func TestFixtureGoldenOutputs(t *testing.T) {
 		{name: "single-package-locked", golden: "single-package-locked.json", wantEnabledRules: []string{"PW-R001"}},
 		{name: "rules-missing-lockfile", golden: "rules-missing-lockfile.json", wantEnabledRules: []string{"PW-R001"}, wantFindingRules: []string{"PW-R001"}},
 		{name: "rules-policy-suppressed", golden: "rules-policy-suppressed.json", wantEnabledRules: []string{"PW-R001"}, wantSuppressedRules: []string{"PW-R001"}},
+		{name: "policy-grouped", golden: "policy-grouped.json", wantEnabledRules: []string{"PW-R000", "PW-R001"}, wantFindingRules: []string{"PW-R001"}},
 		{name: "malformed-config", golden: "malformed-config.json", wantEnabledRules: []string{"PW-R001"}},
 		{name: "mixed-ecosystem", profile: model.ProfileStrict, golden: "mixed-ecosystem-strict.json", wantEnabledRules: []string{"PW-R000", "PW-R001"}},
 	}
