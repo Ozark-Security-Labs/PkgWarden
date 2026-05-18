@@ -33,7 +33,8 @@ Prebuilt binaries for Linux, macOS, and Windows will be attached to each [GitHub
 Then scan a repository:
 
 ```bash
-pkgwarden scan . --profile baseline --format markdown --output pkgwarden.md
+pkgwarden scan . --profile baseline --format human
+pkgwarden scan . --profile baseline --format json
 ```
 
 Use it in CI with the GitHub Action (ships with v0.1):
@@ -173,7 +174,7 @@ Enforce mode writes the requested reports first, then exits `20` when findings m
 
 ## Project status
 
-- **Pre-v0.1.** The scanner core (milestone M0, issues PW-001 through PW-010) is in active development. The CLI in `cmd/pkgwarden/` is currently a scaffold; rules and reporters land progressively across M0–M4.
+- **Pre-v0.1.** The scanner core (milestone M0, issues PW-001 through PW-010) includes the initial CLI, repository inventory, baseline rule execution, policy loading, suppressions, JSON output, human output, and token redaction. Additional rules and reporters land progressively across M1–M4.
 - **v0.1** will ship the first stable CLI, prebuilt binaries for Linux/macOS/Windows, the `Ozark-Security-Labs/PkgWarden` GitHub Action, the public rule catalog, and the SARIF reporter. See [docs/RELEASES.md](docs/RELEASES.md) and [docs/ROADMAP.md](docs/ROADMAP.md).
 - **JSON schema** — v1 contract; breaking changes ship via the documented compatibility policy.
 - **Go** — module targets Go 1.23, single module.

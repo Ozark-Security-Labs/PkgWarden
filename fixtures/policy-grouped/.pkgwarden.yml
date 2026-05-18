@@ -1,0 +1,13 @@
+strict: true
+profiles:
+  - strict
+registries:
+  approved:
+    - https://registry.npmjs.org
+package_firewall:
+  endpoints:
+    - https://firewall.example.local
+  default_cooldown_days: 7
+rules:
+  severity:
+    PW-R001: high

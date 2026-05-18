@@ -1,0 +1,20 @@
+strict: true
+profiles:
+  - strict
+registries:
+  approved:
+    - https://registry.npmjs.org
+package_firewall:
+  endpoints:
+    - https://firewall.example.local
+  default_cooldown_days: 7
+rules:
+  enabled:
+    - PW-R000
+  disabled: []
+  severity:
+    PW-R001: high
+suppressions:
+  - rule_id: PW-R001
+    path: package.json
+    reason: Example suppression reason.

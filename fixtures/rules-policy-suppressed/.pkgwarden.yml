@@ -1,0 +1,6 @@
+profiles:
+  - baseline
+suppressions:
+  - rule_id: PW-R001
+    path: package.json
+    reason: fixture suppression

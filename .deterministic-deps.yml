@@ -11,12 +11,22 @@ include:
   - go.sum
   - go.work
   - go.work.sum
+  - package.json
+  - package-lock.json
+  - Cargo.toml
+  - Cargo.lock
+  - crates/**/Cargo.toml
   - Dockerfile
   - docker-compose.yml
+  - requirements*.txt
+  - pyproject.toml
 
 exclude:
+  - node_modules/**
+  - target/**
   - vendor/**
   - bin/**
   - dist/**
+  - coverage/**
 
 allowlist: []

@@ -1,0 +1,505 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Ozark-Security-Labs/PkgWarden/docs/scan-output.schema.json",
+  "title": "PkgWarden scan output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "target",
+    "inventory",
+    "warnings",
+    "findings",
+    "suppressed_findings",
+    "rules",
+    "profiles",
+    "policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "target": {
+      "type": "string"
+    },
+    "inventory": {
+      "$ref": "#/$defs/inventory"
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/warning"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "suppressed_findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    }
+  },
+  "$defs": {
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "profile_id": {
+      "type": "string",
+      "enum": [
+        "baseline",
+        "strict",
+        "socket-firewall",
+        "veracode-package-firewall",
+        "private-registry"
+      ]
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ecosystems",
+        "package_managers",
+        "manifests",
+        "lockfiles",
+        "ci_workflows",
+        "dependency_bots",
+        "package_manager_config_files"
+      ],
+      "properties": {
+        "ecosystems": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "package_managers": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "manifests": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "lockfiles": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "ci_workflows": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "dependency_bots": {
+          "$ref": "#/$defs/inventory_items"
+        },
+        "package_manager_config_files": {
+          "$ref": "#/$defs/inventory_items"
+        }
+      }
+    },
+    "inventory_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/inventory_item"
+      }
+    },
+    "inventory_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "locations"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "ecosystem": {
+          "type": "string"
+        },
+        "package_manager": {
+          "type": "string"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location"
+          }
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "start_column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_column": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "warning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "message"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "rule_id",
+        "title",
+        "severity",
+        "category",
+        "confidence",
+        "locations",
+        "evidence",
+        "recommendation",
+        "references",
+        "autofix"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "category": {
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/confidence"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "recommendation": {
+          "type": "string"
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        },
+        "autofix": {
+          "$ref": "#/$defs/autofix"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "locations"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/location"
+          }
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "url"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "autofix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "ecosystem",
+        "category",
+        "severity",
+        "profiles",
+        "remediation",
+        "references",
+        "enabled"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "ecosystem": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/severity"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/profile_id"
+          }
+        },
+        "remediation": {
+          "type": "string"
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/profile_id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profiles",
+        "rules",
+        "suppressions"
+      ],
+      "properties": {
+        "strict": {
+          "type": "boolean"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/profile_id"
+          }
+        },
+        "registries": {
+          "$ref": "#/$defs/registry_policy"
+        },
+        "package_firewall": {
+          "$ref": "#/$defs/package_firewall_policy"
+        },
+        "rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "enabled",
+            "disabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "disabled": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "severity": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/severity"
+              }
+            }
+          }
+        },
+        "suppressions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/suppression"
+          }
+        }
+      }
+    },
+    "registry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved"
+      ],
+      "properties": {
+        "approved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      }
+    },
+    "package_firewall_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "endpoints"
+      ],
+      "properties": {
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "default_cooldown_days": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "suppression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "path",
+        "reason"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

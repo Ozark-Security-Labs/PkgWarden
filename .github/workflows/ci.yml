@@ -48,3 +48,9 @@ jobs:
 
       - name: go test
         run: go test ./...
+
+      - name: Smoke test human output
+        run: go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format human
+
+      - name: Smoke test JSON output
+        run: go run ./cmd/pkgwarden -- scan fixtures/empty-repo --format json

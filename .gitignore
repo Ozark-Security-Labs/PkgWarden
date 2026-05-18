@@ -11,6 +11,17 @@
 .env.*
 !.env.example
 
+# Node/TypeScript
+node_modules/
+lib/
+coverage/
+*.tsbuildinfo
+
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+
 # Go
 /bin/
 /dist/
@@ -21,6 +32,14 @@ coverage.html
 /pkgwarden
 /pkgwarden.exe
 vendor/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
 
 # Generated reports
 *-report/

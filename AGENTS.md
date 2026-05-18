@@ -29,18 +29,19 @@ the explicit non-goals at [docs/NON_GOALS.md](docs/NON_GOALS.md).
 ## Repository layout
 
 - `cmd/pkgwarden/` — CLI entrypoint.
-- `internal/inventory/` — repository walking and ecosystem detection.
-- `internal/config/` — policy loading, profile resolution.
-- `internal/parsers/` — YAML, JSON, TOML, INI, and line-aware text parsers.
-- `internal/rules/` — rule registry, plus `node/`, `python/`, `bots/`,
-  and `ci/` subpackages.
-- `internal/reporting/` — human, JSON, Markdown, SARIF, annotation outputs.
+- `internal/cli/` — CLI argument parsing and command dispatch.
+- `internal/scanner/` — scanner orchestration and repository inventory.
+- `internal/policy/` — policy loading and profile selection.
+- `internal/parser/` — JSON, YAML, TOML, INI, XML, and line-aware text parsers.
+- `internal/rules/` — rule registry, rule execution, and suppressions.
+- `internal/reporting/` — human and JSON report outputs.
+- `internal/redaction/` — shared token and credential redaction helpers.
 - `internal/autofix/` — patch model and safe fix generation (M5+).
 - `fixtures/` — fixture repositories and expected outputs.
 - `.github/` — workflows, issue templates, ruleset.
 - `docs/` — product and implementation documentation.
 
-The Go package layout is documented in detail at
+The longer-term Go package layout is documented in detail at
 [docs/IMPLEMENTATION_ARCHITECTURE.md](docs/IMPLEMENTATION_ARCHITECTURE.md).
 
 ## Build, test, and development commands
