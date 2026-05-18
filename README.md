@@ -16,6 +16,8 @@
 
 PkgWarden maps package-manager and dependency-ingestion hardening posture across a repository. It answers a foundational supply-chain question — **how is this codebase actually acquiring its dependencies, and where are the controls weak?** — by inspecting manifests, lockfiles, package-manager config, dependency-bot config, and CI workflows, then reporting evidence-bound hardening gaps with file/line spans.
 
+PkgWarden is a package-manager hardening advisor, not a software composition analysis (SCA) scanner. It checks dependency-ingestion controls, not CVE exposure across a dependency graph.
+
 Supply-chain compromise is often a configuration failure before it is a dependency failure. PkgWarden gives you the inventory.
 
 ## Quickstart
@@ -89,6 +91,16 @@ A SARIF report covering the same findings is available for advisory GitHub code 
 
 Plus rule coverage for `.npmrc`, `pip.conf`, `.yarnrc.yml`, `bunfig.toml`, and equivalent package-manager config files. Java, .NET, Ruby, Rust, and Go ecosystems are scheduled for v0.3.
 
+## MVP rule categories
+
+| Category        | What PkgWarden checks                                                                 |
+| --------------- | -------------------------------------------------------------------------------------- |
+| cooldown        | Minimum release-age gates and package freshness controls                              |
+| lockfile        | Lockfile presence, frozen-install expectations, and drift risks                       |
+| registry        | Registry trust boundaries, approved sources, and package-manager auth posture         |
+| install-scripts | Lifecycle script execution posture during dependency installation                      |
+| bots-and-ci     | Dependabot or Renovate cooldown alignment and CI install-command hardening            |
+
 ## What you get
 
 **Composable profiles.** `baseline`, `strict`, `socket-firewall`, `veracode-package-firewall`, `private-registry`, `regulated-ci`, and `oss-maintainer`. Each profile selects which rules apply and how strict each rule is. Defaults: 7-day cooldown (baseline), 14-day cooldown (strict).
@@ -100,6 +112,13 @@ Plus rule coverage for `.npmrc`, `pip.conf`, `.yarnrc.yml`, `bunfig.toml`, and e
 **Token redaction.** Token-shaped values are redacted in every output format. Reports remain safe to attach to PRs and CI artifacts; see [docs/DATA_HANDLING.md](docs/DATA_HANDLING.md) for sensitivity and sharing guidance.
 
 **Advisory by default.** Findings are evidence-bound recommendations unless mechanically proven. Enforce mode is opt-in per CI step.
+
+## How to read severity and profiles
+
+- Profiles (`baseline`, `strict`, etc.) define expected controls for a repository.
+- Severity describes hardening impact when a control is missing under the active profile.
+- The same rule can surface with different expected values between profiles (for example, 7-day vs 14-day cooldown).
+- See [docs/CONFIGURATION.md](docs/CONFIGURATION.md) for profiles and [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md) for finding semantics.
 
 ## Output formats
 
