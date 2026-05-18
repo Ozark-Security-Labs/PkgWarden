@@ -1,16 +1,20 @@
 package redaction
 
 import (
+	"net/url"
 	"strings"
 	"testing"
 )
 
 func TestEvidenceTextRedactsURLCredentials(t *testing.T) {
 	got := EvidenceText("registry URL https://user:pass123@registry.example/simple was configured")
-	want := "registry URL https://[REDACTED]@registry.example/simple was configured"
+	want := "registry URL https://REDACTED@registry.example/simple was configured"
 
 	if got != want {
 		t.Fatalf("EvidenceText() = %q, want %q", got, want)
+	}
+	if _, err := url.Parse("https://REDACTED@registry.example/simple"); err != nil {
+		t.Fatalf("redacted URL is not parseable: %v", err)
 	}
 }
 
@@ -53,7 +57,7 @@ func TestEvidenceTextRedactsPackageManagerSnippets(t *testing.T) {
 			name: "pip",
 			in:   "index-url = https://pipuser:pippass@pypi.example/simple",
 			raw:  []string{"pipuser", "pippass"},
-			want: []string{"https://[REDACTED]@pypi.example/simple"},
+			want: []string{"https://REDACTED@pypi.example/simple"},
 		},
 		{
 			name: "poetry",
@@ -89,6 +93,21 @@ func TestEvidenceTextRedactsPackageManagerSnippets(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestEvidenceTextRedactsLongNPMTokensWithoutRedactingNames(t *testing.T) {
+	input := "token npm_abcdefghijklmnopqrstuvwxyz1234567890 in npm_publish.yml"
+	got := EvidenceText(input)
+
+	if strings.Contains(got, "npm_abcdefghijklmnopqrstuvwxyz1234567890") {
+		t.Fatalf("EvidenceText() = %q, contains raw npm token", got)
+	}
+	if !strings.Contains(got, "token [REDACTED]") {
+		t.Fatalf("EvidenceText() = %q, want long npm token redacted", got)
+	}
+	if !strings.Contains(got, "npm_publish.yml") {
+		t.Fatalf("EvidenceText() = %q, want ordinary npm name preserved", got)
 	}
 }
 

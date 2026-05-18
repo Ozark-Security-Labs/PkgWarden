@@ -1,7 +1,7 @@
 package scanner
 
 import (
-	"encoding/json"
+	"bytes"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/Ozark-Security-Labs/PkgWarden/internal/model"
+	"github.com/Ozark-Security-Labs/PkgWarden/internal/reporting"
 )
 
 type fixtureCase struct {
@@ -112,11 +113,11 @@ func runFixture(t *testing.T, tc fixtureCase) model.Report {
 
 func marshalGolden(t *testing.T, report model.Report) string {
 	t.Helper()
-	encoded, err := json.MarshalIndent(report, "", "  ")
-	if err != nil {
-		t.Fatalf("marshal report: %v", err)
+	var out bytes.Buffer
+	if err := reporting.WriteJSON(&out, report); err != nil {
+		t.Fatalf("write golden report: %v", err)
 	}
-	return string(encoded) + "\n"
+	return out.String()
 }
 
 func enabledRuleIDs(rules []model.Rule) []string {

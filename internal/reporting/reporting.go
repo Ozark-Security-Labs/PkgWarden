@@ -137,6 +137,7 @@ func writeEcosystemGroups(w io.Writer, report model.Report, findings []model.Fin
 }
 
 func redactedReport(report model.Report) model.Report {
+	report.Warnings = redactedWarnings(report.Warnings)
 	report.Findings = redactedFindings(report.Findings)
 	report.SuppressedFindings = redactedFindings(report.SuppressedFindings)
 	report.Policy = redactedPolicy(report.Policy)
@@ -144,6 +145,9 @@ func redactedReport(report model.Report) model.Report {
 }
 
 func redactedPolicy(policy model.Policy) model.Policy {
+	policy.Profiles = redactedProfiles(policy.Profiles)
+	policy.Rules = redactedRulePolicy(policy.Rules)
+	policy.Suppressions = redactedSuppressions(policy.Suppressions)
 	if policy.Registries != nil {
 		registries := *policy.Registries
 		registries.Approved = redactedStrings(policy.Registries.Approved)
@@ -155,6 +159,57 @@ func redactedPolicy(policy model.Policy) model.Policy {
 		policy.PackageFirewall = &firewall
 	}
 	return policy
+}
+
+func redactedWarnings(warnings []model.Warning) []model.Warning {
+	if warnings == nil {
+		return nil
+	}
+	redacted := make([]model.Warning, len(warnings))
+	copy(redacted, warnings)
+	for i := range redacted {
+		redacted[i].Path = redactEvidence(redacted[i].Path)
+		redacted[i].Message = redactEvidence(redacted[i].Message)
+	}
+	return redacted
+}
+
+func redactedProfiles(profiles []model.ProfileID) []model.ProfileID {
+	if profiles == nil {
+		return nil
+	}
+	redacted := make([]model.ProfileID, len(profiles))
+	for i, profile := range profiles {
+		redacted[i] = model.ProfileID(redactEvidence(string(profile)))
+	}
+	return redacted
+}
+
+func redactedRulePolicy(policy model.RulePolicy) model.RulePolicy {
+	policy.Enabled = redactedStrings(policy.Enabled)
+	policy.Disabled = redactedStrings(policy.Disabled)
+	if policy.Severity != nil {
+		severity := make(map[string]model.Severity, len(policy.Severity))
+		for ruleID, value := range policy.Severity {
+			severity[redactEvidence(ruleID)] = value
+		}
+		policy.Severity = severity
+	}
+	return policy
+}
+
+func redactedSuppressions(suppressions []model.Suppression) []model.Suppression {
+	if suppressions == nil {
+		return nil
+	}
+	redacted := make([]model.Suppression, len(suppressions))
+	copy(redacted, suppressions)
+	for i := range redacted {
+		redacted[i].RuleID = redactEvidence(redacted[i].RuleID)
+		redacted[i].Path = redactEvidence(redacted[i].Path)
+		redacted[i].Reason = redactEvidence(redacted[i].Reason)
+	}
+	return redacted
 }
 
 func redactedStrings(values []string) []string {

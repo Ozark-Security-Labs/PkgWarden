@@ -218,7 +218,7 @@ func TestReportFormatsUseSharedRedaction(t *testing.T) {
 				t.Fatalf("%s output contains raw secret %q: %s", label, raw, output)
 			}
 		}
-		for _, want := range []string{"https://[REDACTED]@registry.example", "Bearer [REDACTED]"} {
+		for _, want := range []string{"https://REDACTED@registry.example", "Bearer [REDACTED]"} {
 			if !strings.Contains(output, want) {
 				t.Fatalf("%s output = %q, want redacted context %q", label, output, want)
 			}
@@ -245,7 +245,7 @@ func TestWriteJSONRedactsPolicyEndpoints(t *testing.T) {
 			t.Fatalf("output contains raw policy credential %q: %s", raw, out.String())
 		}
 	}
-	for _, want := range []string{"https://[REDACTED]@registry.example/npm", "https://[REDACTED]@firewall.example/api"} {
+	for _, want := range []string{"https://REDACTED@registry.example/npm", "https://REDACTED@firewall.example/api"} {
 		if !strings.Contains(out.String(), want) {
 			t.Fatalf("output = %q, want redacted policy endpoint %q", out.String(), want)
 		}
@@ -255,6 +255,91 @@ func TestWriteJSONRedactsPolicyEndpoints(t *testing.T) {
 	}
 	if report.Policy.PackageFirewall.Endpoints[0] != "https://firewall-user:firewall-token@firewall.example/api" {
 		t.Fatalf("original firewall endpoint mutated: %#v", report.Policy.PackageFirewall.Endpoints)
+	}
+}
+
+func TestWriteJSONRedactsWarningsAndPolicyStrings(t *testing.T) {
+	var out bytes.Buffer
+	report := emptyReport("fixtures/redacted-policy")
+	report.Warnings = []model.Warning{
+		{Path: "config/npm_publish.yml", Message: "policy warning token=npm_abcdefghijklmnopqrstuvwxyz1234567890"},
+	}
+	report.Policy.Rules.Enabled = []string{"npm_enabled_rule"}
+	report.Policy.Rules.Disabled = []string{"npm_disabled_rule"}
+	report.Policy.Rules.Severity = map[string]model.Severity{
+		"npm_severity_rule": model.SeverityHigh,
+	}
+	report.Policy.Suppressions = []model.Suppression{
+		{
+			RuleID: "npm_suppression_rule",
+			Path:   "config/npm_suppression.yml",
+			Reason: "accepted risk password=package-secret",
+		},
+	}
+
+	if err := WriteJSON(&out, report); err != nil {
+		t.Fatalf("WriteJSON returned error: %v", err)
+	}
+
+	for _, raw := range []string{
+		"npm_abcdefghijklmnopqrstuvwxyz1234567890",
+		"package-secret",
+	} {
+		if strings.Contains(out.String(), raw) {
+			t.Fatalf("output contains raw policy string %q: %s", raw, out.String())
+		}
+	}
+	for _, want := range []string{
+		`config/npm_publish.yml`,
+		`policy warning token=[REDACTED]`,
+		`"npm_enabled_rule"`,
+		`"npm_disabled_rule"`,
+		`"npm_severity_rule"`,
+		`"npm_suppression_rule"`,
+		`config/npm_suppression.yml`,
+		`accepted risk password=[REDACTED]`,
+	} {
+		if !strings.Contains(out.String(), want) {
+			t.Fatalf("output = %q, want redacted context %q", out.String(), want)
+		}
+	}
+	if report.Warnings[0].Path != "config/npm_publish.yml" {
+		t.Fatalf("original warning path mutated: %#v", report.Warnings)
+	}
+	if report.Policy.Rules.Enabled[0] != "npm_enabled_rule" {
+		t.Fatalf("original enabled rules mutated: %#v", report.Policy.Rules.Enabled)
+	}
+	if _, ok := report.Policy.Rules.Severity["npm_severity_rule"]; !ok {
+		t.Fatalf("original severity overrides mutated: %#v", report.Policy.Rules.Severity)
+	}
+	if report.Policy.Suppressions[0].Reason != "accepted risk password=package-secret" {
+		t.Fatalf("original suppressions mutated: %#v", report.Policy.Suppressions)
+	}
+}
+
+func TestWriteHumanRedactsWarnings(t *testing.T) {
+	var out bytes.Buffer
+	report := emptyReport("fixtures/redacted-warnings")
+	report.Warnings = []model.Warning{
+		{Path: "config/npm_publish.yml", Message: "policy warning token=npm_abcdefghijklmnopqrstuvwxyz1234567890"},
+	}
+
+	if err := WriteHuman(&out, report); err != nil {
+		t.Fatalf("WriteHuman returned error: %v", err)
+	}
+
+	for _, raw := range []string{"npm_abcdefghijklmnopqrstuvwxyz1234567890"} {
+		if strings.Contains(out.String(), raw) {
+			t.Fatalf("human output contains raw warning string %q: %s", raw, out.String())
+		}
+	}
+	for _, want := range []string{"Warning: config/npm_publish.yml: policy warning token=[REDACTED]"} {
+		if !strings.Contains(out.String(), want) {
+			t.Fatalf("human output = %q, want redacted warning %q", out.String(), want)
+		}
+	}
+	if report.Warnings[0].Message != "policy warning token=npm_abcdefghijklmnopqrstuvwxyz1234567890" {
+		t.Fatalf("original warning mutated: %#v", report.Warnings)
 	}
 }
 
