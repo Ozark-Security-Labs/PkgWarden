@@ -6,7 +6,8 @@ responsibly.
 ## Reporting a vulnerability
 
 Use GitHub private vulnerability reporting when available. If unavailable,
-contact the maintainers through GitHub before publishing details.
+contact the maintainers through GitHub private vulnerability reporting before
+publishing details.
 
 Do not open a public issue for sensitive reports.
 

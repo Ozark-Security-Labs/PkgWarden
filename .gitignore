@@ -13,7 +13,6 @@
 
 # Node/TypeScript
 node_modules/
-dist/
 lib/
 coverage/
 *.tsbuildinfo
@@ -24,9 +23,15 @@ coverage/
 *.pdb
 
 # Go
-/pkgwarden
+/bin/
+/dist/
+*.exe
 *.test
 coverage.out
+coverage.html
+/pkgwarden
+/pkgwarden.exe
+vendor/
 
 # Python
 __pycache__/
@@ -39,3 +44,6 @@ venv/
 # Generated reports
 *-report/
 .sarif/
+pkgwarden.sarif
+pkgwarden.json
+pkgwarden.md
